@@ -6,6 +6,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -14,6 +15,8 @@ import java.awt.TextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import java.awt.Color;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Principal extends JFrame {
 
@@ -41,16 +44,22 @@ public class Principal extends JFrame {
 	 */
 	public Principal() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 937, 634);
+		setBounds(100, 100, 937, 640);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton btnNewButton = new JButton("Novo");
-		btnNewButton.setBounds(0, 0, 89, 45);
-		contentPane.add(btnNewButton);
+		JButton btnNovo = new JButton("Novo");
+		btnNovo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "Teste de botao");
+			}
+		});
+		
+		btnNovo.setBounds(0, 0, 89, 45);
+		contentPane.add(btnNovo);
 		
 		JButton btnAbrir = new JButton("Abrir");
 		btnAbrir.addActionListener(new ActionListener() {
@@ -94,8 +103,9 @@ public class Principal extends JFrame {
 		contentPane.add(textArea_1);
 		
 		textField = new JTextField();
+		textField.setEditable(false);
 		textField.setBackground(new Color(240, 240, 240));
-		textField.setBounds(0, 569, 921, 20);
+		textField.setBounds(0, 569, 921, 25);
 		contentPane.add(textField);
 		textField.setColumns(10);
 	}
