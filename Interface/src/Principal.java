@@ -134,6 +134,7 @@ public class Principal extends JFrame {
 		
 		JButton btnNovo = new JButton("Novo\r\n[crtl + n]");
 		btnNovo.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
 		btnNovo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tfCodigo.setText("");
