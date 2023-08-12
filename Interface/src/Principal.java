@@ -15,6 +15,7 @@ import java.awt.TextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Font;
@@ -63,7 +64,6 @@ public class Principal extends JFrame {
 	public Principal() {
 		
 		setTitle("COMPILADOR");
-		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 937, 640);
 		contentPane = new JPanel();
@@ -80,6 +80,7 @@ public class Principal extends JFrame {
 		contentPane.add(tfCodigo);
 			
 		TextArea tfMensagens = new TextArea();
+		tfMensagens.setFont(new Font("Dialog", Font.PLAIN, 14));
 		tfMensagens.setEditable(false);
 		tfMensagens.setBounds(0, 401, 921, 167);
 		contentPane.add(tfMensagens);
@@ -104,22 +105,35 @@ public class Principal extends JFrame {
 		tfLinhas.setBounds(0, 54, 19, 330);
 		contentPane.add(tfLinhas);
 		
-		
+		//Metodo que adicioan ou remove a quantidade de linhas
 		tfCodigo.addKeyListener(new KeyAdapter() {
 			int qtdLinha = 2;
 			String linhaLista = tfLinhas.getText() + "\r\n";
 			@Override
 			public void keyPressed(KeyEvent e) {
+				
+				//Incrementa linha
 				if(e.getKeyCode() == 10) {
 					linhaLista += (qtdLinha++) + "\r\n";
 					tfLinhas.setText(linhaLista);
 				}
+				
+				//Deleta linha ainda nao funcional
+				/*if(e.getKeyCode() == 8) {
+					if(tfCodigo.getCaretPosition() == 0) {
+						linhaLista = "" + qtdLinha--; 
+						tfLinhas.setText(linhaLista);
+					}
+				}*/
 			}
 		});
 		
 		
-		//Funçoes dos botoes
-		JButton btnNovo = new JButton("Novo");
+		//###### Funçoes dos botoes ########
+		
+		
+		JButton btnNovo = new JButton("Novo\r\n[crtl + n]");
+		btnNovo.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnNovo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tfCodigo.setText("");
@@ -129,39 +143,53 @@ public class Principal extends JFrame {
 			}
 		});
 		
-		btnNovo.setBounds(0, 0, 89, 45);
+		btnNovo.setBounds(0, 0, 105, 45);
 		contentPane.add(btnNovo);
 		
-		JButton btnAbrir = new JButton("Abrir");
+		JButton btnAbrir = new JButton("Abrir[ctrl + o]");
 		btnAbrir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnAbrir.setBounds(90, 0, 89, 45);
+		btnAbrir.setBounds(106, 0, 105, 45);
 		contentPane.add(btnAbrir);
 		
-		JButton btnSalvar = new JButton("Salvar");
-		btnSalvar.setBounds(180, 0, 89, 45);
+		JButton btnSalvar = new JButton("Salvar[ctrl + s]");
+		btnSalvar.setBounds(212, 0, 105, 45);
 		contentPane.add(btnSalvar);
 		
-		JButton btnCopiar = new JButton("Copiar");
-		btnCopiar.setBounds(270, 0, 89, 45);
+		//##########  Ja vem por padrao  #################
+		
+		JButton btnCopiar = new JButton("Copiar[ctrl + c]");
+		btnCopiar.setBounds(318, 0, 105, 45);
 		contentPane.add(btnCopiar);
 		
-		JButton btnColar = new JButton("Colar");
-		btnColar.setBounds(360, 0, 89, 45);
+		JButton btnColar = new JButton("Colar[ctrl + v]");
+		btnColar.setBounds(424, 0, 105, 45);
 		contentPane.add(btnColar);
 		
-		JButton btnRecortar = new JButton("Recortar");
-		btnRecortar.setBounds(450, 0, 89, 45);
+		JButton btnRecortar = new JButton("Recortar[ctrl + x]");
+		btnRecortar.setBounds(530, 0, 120, 45);
 		contentPane.add(btnRecortar);
 		
-		JButton btnCompilar = new JButton("Compilar");
-		btnCompilar.setBounds(540, 0, 89, 45);
+		//####################
+		
+		JButton btnCompilar = new JButton("Compilar[F7]");
+		btnCompilar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tfMensagens.setText("Compilação de programas ainda não implementada");
+			}
+		});
+		btnCompilar.setBounds(651, 0, 105, 45);
 		contentPane.add(btnCompilar);
 		
-		JButton btnEquipe = new JButton("Equipe");
-		btnEquipe.setBounds(630, 0, 89, 45);
+		JButton btnEquipe = new JButton("Equipe[F1]");
+		btnEquipe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tfMensagens.setText("Gabriel de Souza Klauck, Nycolly Miranda");
+			}
+		});
+		btnEquipe.setBounds(757, 0, 105, 45);
 		contentPane.add(btnEquipe);
 	}
 }
