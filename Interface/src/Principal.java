@@ -22,6 +22,7 @@ import java.awt.Font;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.JSlider;
+import javax.swing.ImageIcon;
 
 public class Principal extends JFrame {
 
@@ -65,7 +66,7 @@ public class Principal extends JFrame {
 		
 		setTitle("COMPILADOR");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 937, 640);
+		setBounds(100, 100, 1114, 685);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -76,13 +77,13 @@ public class Principal extends JFrame {
 		
 		tfCodigo.setText("\r\n");
 		tfCodigo.setFont(new Font("Courier New", Font.PLAIN, 12));
-		tfCodigo.setBounds(20, 54, 891, 341);
+		tfCodigo.setBounds(20, 54, 1068, 338);
 		contentPane.add(tfCodigo);
 			
 		TextArea tfMensagens = new TextArea();
 		tfMensagens.setFont(new Font("Dialog", Font.PLAIN, 14));
 		tfMensagens.setEditable(false);
-		tfMensagens.setBounds(0, 401, 921, 167);
+		tfMensagens.setBounds(0, 401, 1088, 205);
 		contentPane.add(tfMensagens);
 		
 		tfArquivo = new JTextField();
@@ -90,7 +91,7 @@ public class Principal extends JFrame {
 		tfArquivo.setToolTipText("");
 		tfArquivo.setEditable(false);
 		tfArquivo.setBackground(new Color(240, 240, 240));
-		tfArquivo.setBounds(0, 569, 921, 25);
+		tfArquivo.setBounds(0, 612, 322, 25);
 		contentPane.add(tfArquivo);
 		tfArquivo.setColumns(10);
 		
@@ -133,6 +134,7 @@ public class Principal extends JFrame {
 		
 		
 		JButton btnNovo = new JButton("Novo\r\n[crtl + n]");
+		btnNovo.setIcon(new ImageIcon(Principal.class.getResource("/icones/novo-documento.png")));
 		btnNovo.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
 		btnNovo.addActionListener(new ActionListener() {
@@ -144,53 +146,64 @@ public class Principal extends JFrame {
 			}
 		});
 		
-		btnNovo.setBounds(0, 0, 105, 45);
+		btnNovo.setBounds(0, 0, 120, 45);
 		contentPane.add(btnNovo);
 		
 		JButton btnAbrir = new JButton("Abrir[ctrl + o]");
+		btnAbrir.setIcon(new ImageIcon(Principal.class.getResource("/icones/pasta-aberta.png")));
 		btnAbrir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnAbrir.setBounds(106, 0, 105, 45);
+		btnAbrir.setBounds(125, 0, 120, 45);
 		contentPane.add(btnAbrir);
 		
 		JButton btnSalvar = new JButton("Salvar[ctrl + s]");
-		btnSalvar.setBounds(212, 0, 105, 45);
+		btnSalvar.setIcon(new ImageIcon(Principal.class.getResource("/icones/opcao-de-salvar-arquivo.png")));
+		btnSalvar.setBounds(252, 0, 125, 45);
 		contentPane.add(btnSalvar);
 		
 		//##########  Ja vem por padrao  #################
 		
 		JButton btnCopiar = new JButton("Copiar[ctrl + c]");
-		btnCopiar.setBounds(318, 0, 105, 45);
+		btnCopiar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnCopiar.setIcon(new ImageIcon(Principal.class.getResource("/icones/copia-de.png")));
+		btnCopiar.setBounds(382, 0, 125, 45);
 		contentPane.add(btnCopiar);
 		
 		JButton btnColar = new JButton("Colar[ctrl + v]");
-		btnColar.setBounds(424, 0, 105, 45);
+		btnColar.setIcon(new ImageIcon(Principal.class.getResource("/icones/cola.png")));
+		btnColar.setBounds(512, 0, 122, 45);
 		contentPane.add(btnColar);
 		
 		JButton btnRecortar = new JButton("Recortar[ctrl + x]");
-		btnRecortar.setBounds(530, 0, 120, 45);
+		btnRecortar.setIcon(new ImageIcon(Principal.class.getResource("/icones/tesouras-e-linhas-de-recorte.png")));
+		btnRecortar.setBounds(641, 0, 140, 45);
 		contentPane.add(btnRecortar);
 		
 		//####################
 		
 		JButton btnCompilar = new JButton("Compilar[F7]");
+		btnCompilar.setIcon(new ImageIcon(Principal.class.getResource("/icones/engrenagem.png")));
 		btnCompilar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tfMensagens.setText("Compilação de programas ainda não implementada");
 			}
 		});
-		btnCompilar.setBounds(651, 0, 105, 45);
+		btnCompilar.setBounds(790, 0, 120, 45);
 		contentPane.add(btnCompilar);
 		
 		JButton btnEquipe = new JButton("Equipe[F1]");
+		btnEquipe.setIcon(new ImageIcon(Principal.class.getResource("/icones/equipe.png")));
 		btnEquipe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tfMensagens.setText("Gabriel de Souza Klauck, Nycolly Miranda");
 			}
 		});
-		btnEquipe.setBounds(757, 0, 105, 45);
+		btnEquipe.setBounds(915, 0, 105, 45);
 		contentPane.add(btnEquipe);
 	}
 }
