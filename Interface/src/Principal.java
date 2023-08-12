@@ -19,6 +19,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Font;
 import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import javax.swing.JSlider;
 
 public class Principal extends JFrame {
 
@@ -59,6 +61,7 @@ public class Principal extends JFrame {
 	 * Create the frame.
 	 */
 	public Principal() {
+		
 		setTitle("COMPILADOR");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,9 +73,10 @@ public class Principal extends JFrame {
 		contentPane.setLayout(null);
 				
 		TextArea tfCodigo = new TextArea();
+		
 		tfCodigo.setText("\r\n");
 		tfCodigo.setFont(new Font("Courier New", Font.PLAIN, 12));
-		tfCodigo.setBounds(20, 54, 901, 349);
+		tfCodigo.setBounds(20, 54, 891, 341);
 		contentPane.add(tfCodigo);
 			
 		TextArea tfMensagens = new TextArea();
@@ -89,16 +93,29 @@ public class Principal extends JFrame {
 		contentPane.add(tfArquivo);
 		tfArquivo.setColumns(10);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setLineWrap(true);
-		textArea.setEditable(false);
-		textArea.setEnabled(false);
-		textArea.setWrapStyleWord(true);
-		textArea.setFont(new Font("Courier New", Font.PLAIN, 12));
-		textArea.setBackground(new Color(240, 240, 240));
-		textArea.setText("1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10\r\n11\r\n12\r\n13\r\n14\r\n15\r\n16");
-		textArea.setBounds(0, 54, 19, 330);
-		contentPane.add(textArea);
+		JTextArea tfLinhas = new JTextArea();
+		tfLinhas.setLineWrap(true);
+		tfLinhas.setEditable(false);
+		tfLinhas.setEnabled(false);
+		tfLinhas.setWrapStyleWord(true);
+		tfLinhas.setFont(new Font("Courier New", Font.PLAIN, 12));
+		tfLinhas.setBackground(new Color(240, 240, 240));
+		tfLinhas.setText("1");
+		tfLinhas.setBounds(0, 54, 19, 330);
+		contentPane.add(tfLinhas);
+		
+		
+		tfCodigo.addKeyListener(new KeyAdapter() {
+			int qtdLinha = 2;
+			String linhaLista = tfLinhas.getText() + "\r\n";
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == 10) {
+					linhaLista += (qtdLinha++) + "\r\n";
+					tfLinhas.setText(linhaLista);
+				}
+			}
+		});
 		
 		
 		//Funçoes dos botoes
