@@ -8,6 +8,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
@@ -18,11 +20,14 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.awt.Font;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.JSlider;
 import javax.swing.ImageIcon;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Principal extends JFrame {
 
@@ -79,14 +84,10 @@ public class Principal extends JFrame {
 		tfCodigo.setFont(new Font("Courier New", Font.PLAIN, 12));
 		tfCodigo.setBounds(20, 54, 1068, 338);
 		contentPane.add(tfCodigo);
-			
-		TextArea tfMensagens = new TextArea();
-		tfMensagens.setFont(new Font("Dialog", Font.PLAIN, 14));
-		tfMensagens.setEditable(false);
-		tfMensagens.setBounds(0, 401, 1088, 205);
-		contentPane.add(tfMensagens);
 		
 		tfArquivo = new JTextField();
+		tfArquivo.setBorder(null);
+		tfArquivo.setCaretColor(Color.WHITE);
 		tfArquivo.setText("Sem arquivo aberto");
 		tfArquivo.setToolTipText("");
 		tfArquivo.setEditable(false);
@@ -94,6 +95,18 @@ public class Principal extends JFrame {
 		tfArquivo.setBounds(0, 612, 322, 25);
 		contentPane.add(tfArquivo);
 		tfArquivo.setColumns(10);
+		
+		TextArea tfMensagens = new TextArea();
+		tfMensagens.setFont(new Font("Dialog", Font.PLAIN, 14));
+		tfMensagens.setEditable(false);
+		tfMensagens.setBounds(0, 401, 1088, 205);
+		contentPane.add(tfMensagens);
+		
+		JFileChooser EscolheArquivo = new JFileChooser();
+		EscolheArquivo.setEnabled(false);
+		EscolheArquivo.setVisible(false);
+		EscolheArquivo.setBounds(20, 54, 614, 315);
+		contentPane.add(EscolheArquivo);
 		
 		JTextArea tfLinhas = new JTextArea();
 		tfLinhas.setLineWrap(true);
@@ -153,10 +166,18 @@ public class Principal extends JFrame {
 		btnAbrir.setIcon(new ImageIcon(Principal.class.getResource("/icones/pasta-aberta.png")));
 		btnAbrir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				EscolheArquivo.setEnabled(true);
+				EscolheArquivo.setVisible(true);
+				
+				
+			    	    			    	
 			}
 		});
 		btnAbrir.setBounds(125, 0, 120, 45);
 		contentPane.add(btnAbrir);
+		
+		
 		
 		JButton btnSalvar = new JButton("Salvar[ctrl + s]");
 		btnSalvar.setIcon(new ImageIcon(Principal.class.getResource("/icones/opcao-de-salvar-arquivo.png")));
@@ -205,5 +226,16 @@ public class Principal extends JFrame {
 		});
 		btnEquipe.setBounds(915, 0, 105, 45);
 		contentPane.add(btnEquipe);
+		
+		
+	}
+	
+	public static File getArquivo(JFileChooser escolha) {
+		int returnVal = escolha.showOpenDialog(escolha);
+	    if (returnVal == JFileChooser.APPROVE_OPTION) {
+	        File file = escolha.getSelectedFile();
+	        return file;
+	    }
+	    return null;
 	}
 }
