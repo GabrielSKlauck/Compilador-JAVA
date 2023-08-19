@@ -2,6 +2,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -21,6 +22,8 @@ import java.awt.Cursor;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.awt.Font;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -28,6 +31,10 @@ import javax.swing.JSlider;
 import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JSplitPane;
+import javax.swing.JScrollBar;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.LineBorder;
 
 public class Principal extends JFrame {
 
@@ -77,13 +84,32 @@ public class Principal extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-				
-		TextArea tfCodigo = new TextArea();
 		
+		JFileChooser EscolheArquivo = new JFileChooser();
+		EscolheArquivo.setBackground(new Color(128, 128, 128));
+		EscolheArquivo.setBorder(new LineBorder(new Color(0, 0, 0)));
+		EscolheArquivo.setForeground(new Color(128, 128, 128));
+		EscolheArquivo.setEnabled(false);
+		EscolheArquivo.setVisible(false);
+		EscolheArquivo.setBounds(423, 66, 567, 304);
+		contentPane.add(EscolheArquivo);
+		
+		JTextArea tfCodigo = new JTextArea();	
+		tfCodigo.setBorder(new NumberedBorder());
 		tfCodigo.setText("\r\n");
-		tfCodigo.setFont(new Font("Courier New", Font.PLAIN, 12));
-		tfCodigo.setBounds(20, 54, 1068, 338);
-		contentPane.add(tfCodigo);
+		tfCodigo.setFont(new Font("Courier New", Font.PLAIN, 13));
+		
+		
+		//tfCodigo.setBounds(29, 57, 1031, 364);	
+		
+		JScrollPane scrollPane = new JScrollPane(tfCodigo);
+		scrollPane.setBorder(null);
+		scrollPane.setViewportBorder(null);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setBounds(10, 56, 1078, 361);
+		contentPane.add(scrollPane);
+		
 		
 		tfArquivo = new JTextField();
 		tfArquivo.setBorder(null);
@@ -98,51 +124,9 @@ public class Principal extends JFrame {
 		
 		TextArea tfMensagens = new TextArea();
 		tfMensagens.setFont(new Font("Dialog", Font.PLAIN, 14));
-		tfMensagens.setEditable(false);
-		tfMensagens.setBounds(0, 401, 1088, 205);
+		tfMensagens.setEditable(true);
+		tfMensagens.setBounds(0, 441, 1088, 162);
 		contentPane.add(tfMensagens);
-		
-		JFileChooser EscolheArquivo = new JFileChooser();
-		EscolheArquivo.setEnabled(false);
-		EscolheArquivo.setVisible(false);
-		EscolheArquivo.setBounds(20, 54, 614, 315);
-		contentPane.add(EscolheArquivo);
-		
-		JTextArea tfLinhas = new JTextArea();
-		tfLinhas.setLineWrap(true);
-		tfLinhas.setEditable(false);
-		tfLinhas.setEnabled(false);
-		tfLinhas.setWrapStyleWord(true);
-		tfLinhas.setFont(new Font("Courier New", Font.PLAIN, 12));
-		tfLinhas.setBackground(new Color(240, 240, 240));
-		tfLinhas.setText("1");
-		tfLinhas.setBounds(0, 54, 19, 330);
-		contentPane.add(tfLinhas);
-		
-		//Metodo que adicioan ou remove a quantidade de linhas
-		tfCodigo.addKeyListener(new KeyAdapter() {
-			int qtdLinha = 2;
-			String linhaLista = tfLinhas.getText() + "\r\n";
-			@Override
-			public void keyPressed(KeyEvent e) {
-				
-				//Incrementa linha
-				if(e.getKeyCode() == 10) {
-					linhaLista += (qtdLinha++) + "\r\n";
-					tfLinhas.setText(linhaLista);
-				}
-				
-				//Deleta linha ainda nao funcional
-				/*if(e.getKeyCode() == 8) {
-					if(tfCodigo.getCaretPosition() == 0) {
-						linhaLista = "" + qtdLinha--; 
-						tfLinhas.setText(linhaLista);
-					}
-				}*/
-			}
-		});
-		
-		
 		//###### Funçoes dos botoes ########
 		
 		
@@ -167,8 +151,41 @@ public class Principal extends JFrame {
 		btnAbrir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				
 				EscolheArquivo.setEnabled(true);
 				EscolheArquivo.setVisible(true);
+				try {
+				String arquivo = getArquivo(EscolheArquivo);
+				File file = new File(arquivo);
+				FileInputStream fis = null;
+		        String texto = "";
+		        
+		        try {
+		            fis = new FileInputStream(file);
+		            int content;
+		            while ((content = fis.read()) != -1) {
+		                texto += (char) content;
+		            }
+		        } catch (IOException el) {
+		            el.printStackTrace();
+		        } finally {
+		            try {
+		                if (fis != null) {
+		                    fis.close();
+		                }
+		            } catch (IOException ex) {
+		                ex.printStackTrace();
+		            }
+		        }
+		        tfCodigo.setText(texto);
+		        tfArquivo.setText(arquivo);
+		        }catch(NullPointerException et) {
+		        	
+		        }
+		        
+		        
+				
+				
 				
 				
 			    	    			    	
@@ -227,13 +244,12 @@ public class Principal extends JFrame {
 		btnEquipe.setBounds(915, 0, 105, 45);
 		contentPane.add(btnEquipe);
 		
-		
 	}
 	
-	public static File getArquivo(JFileChooser escolha) {
+	public static String getArquivo(JFileChooser escolha) {
 		int returnVal = escolha.showOpenDialog(escolha);
 	    if (returnVal == JFileChooser.APPROVE_OPTION) {
-	        File file = escolha.getSelectedFile();
+	        String file = "" + escolha.getSelectedFile();
 	        return file;
 	    }
 	    return null;
