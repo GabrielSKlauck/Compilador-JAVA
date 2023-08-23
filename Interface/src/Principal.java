@@ -34,6 +34,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.awt.Font;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -263,41 +266,45 @@ public class Principal extends JFrame {
 		btnNovo.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control S"), "Salvar");
 		btnNovo.getActionMap().put("Salvar", new AbstractAction(){
 			public void actionPerformed(ActionEvent e){
-				if(tfArquivo.getText().isEmpty()) {
-					EscolheArquivo.setEnabled(true);
-					EscolheArquivo.setVisible(true);
-					File file = new File(getArquivo(EscolheArquivo));
-					System.out.print(file);
-				}else {
-					try {
-						BufferedWriter buffWrite = new BufferedWriter(new FileWriter(tfArquivo.getText(), true));					
-						buffWrite.write(tfCodigo.getText());
-					} catch (IOException e1) {
-						
-						e1.printStackTrace();
-					}
-				}
-			}
+				String arquivo = "" + tfArquivo.getText();				
+				
+				try {
+					//Limpa arquivo
+					BufferedWriter bf = Files.newBufferedWriter(Path.of(arquivo), StandardOpenOption.TRUNCATE_EXISTING);
+					//Reescreve arqivo
+					BufferedWriter buffWrite = new BufferedWriter(new FileWriter(tfArquivo.getText(), true));						
+					buffWrite.write(tfCodigo.getText());
+					buffWrite.close();
+					
+				} catch (IOException e1) {
+					
+					e1.printStackTrace();
+				}	
+				        
+		}
 		});
 		
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				if(tfArquivo.getText().isEmpty()) {
-					EscolheArquivo.setEnabled(true);
-					EscolheArquivo.setVisible(true);
-					File file = new File(getArquivo(EscolheArquivo));
-					System.out.print(file);
-				}else {
+				
+					//EscolheArquivo.setEnabled(true);
+					//EscolheArquivo.setVisible(true);
+					//File file = new File(getArquivo(EscolheArquivo));
+					String arquivo = "" + tfArquivo.getText();				
+				
 					try {
-						BufferedWriter buffWrite = new BufferedWriter(new FileWriter(tfArquivo.getText(), true));					
+						//Limpa arquivo
+						BufferedWriter bf = Files.newBufferedWriter(Path.of(arquivo), StandardOpenOption.TRUNCATE_EXISTING);
+						//Reescreve arqivo
+						BufferedWriter buffWrite = new BufferedWriter(new FileWriter(tfArquivo.getText(), true));						
 						buffWrite.write(tfCodigo.getText());
+						buffWrite.close();
+						
 					} catch (IOException e1) {
 						
 						e1.printStackTrace();
-					}
-				}
-				
+					}	
 					        
 			}
 		});
