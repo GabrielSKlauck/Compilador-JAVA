@@ -112,6 +112,11 @@ public class Principal extends JFrame {
 		EscolheArquivo.setBounds(423, 66, 567, 304);
 		contentPane.add(EscolheArquivo);
 		
+		JSplitPane splitPane = new JSplitPane();
+		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		splitPane.setBounds(10, 66, 1079, 535);
+		
+		
 		JTextArea tfCodigo = new JTextArea();	
 		tfCodigo.setBorder(new NumberedBorder());
 		tfCodigo.setText("\r\n");
@@ -126,7 +131,7 @@ public class Principal extends JFrame {
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setBounds(10, 56, 1078, 361);
-		contentPane.add(scrollPane);
+		//contentPane.add(scrollPane);
 		
 		
 		tfArquivo = new JTextField();
@@ -136,15 +141,24 @@ public class Principal extends JFrame {
 		tfArquivo.setToolTipText("");
 		tfArquivo.setEditable(false);
 		tfArquivo.setBackground(new Color(240, 240, 240));
-		tfArquivo.setBounds(0, 612, 322, 25);
+		tfArquivo.setBounds(10, 625, 322, 25);
 		contentPane.add(tfArquivo);
 		tfArquivo.setColumns(10);
 		
 		TextArea tfMensagens = new TextArea();
+		tfMensagens.setMinimumSize(new Dimension(0, 80));
 		tfMensagens.setFont(new Font("Dialog", Font.PLAIN, 14));
 		tfMensagens.setEditable(true);
 		tfMensagens.setBounds(0, 441, 1088, 162);
-		contentPane.add(tfMensagens);
+		//contentPane.add(tfMensagens);
+		
+		//Adiciona o tfCodigo ao splitPane como sendo a parte superior e adiciona o tfMensagens como 
+		//sendo a parte inferior
+		splitPane.setTopComponent(scrollPane);
+		splitPane.setDividerLocation(300);
+		splitPane.setBottomComponent(tfMensagens);
+		contentPane.add(splitPane);
+		
 		//###### Funçoes dos botoes ########
 		
 		//Botao novo
@@ -266,33 +280,11 @@ public class Principal extends JFrame {
 		btnNovo.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control S"), "Salvar");
 		btnNovo.getActionMap().put("Salvar", new AbstractAction(){
 			public void actionPerformed(ActionEvent e){
-				String arquivo = "" + tfArquivo.getText();				
 				
-				try {
-					//Limpa arquivo
-					BufferedWriter bf = Files.newBufferedWriter(Path.of(arquivo), StandardOpenOption.TRUNCATE_EXISTING);
-					//Reescreve arqivo
-					BufferedWriter buffWrite = new BufferedWriter(new FileWriter(tfArquivo.getText(), true));						
-					buffWrite.write(tfCodigo.getText());
-					buffWrite.close();
+				if(tfArquivo.getText().isEmpty()) {
 					
-				} catch (IOException e1) {
-					
-					e1.printStackTrace();
-				}	
-				        
-		}
-		});
-		
-		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				
-					//EscolheArquivo.setEnabled(true);
-					//EscolheArquivo.setVisible(true);
-					//File file = new File(getArquivo(EscolheArquivo));
-					String arquivo = "" + tfArquivo.getText();				
-				
+				}else {
+					String arquivo = "" + tfArquivo.getText();								
 					try {
 						//Limpa arquivo
 						BufferedWriter bf = Files.newBufferedWriter(Path.of(arquivo), StandardOpenOption.TRUNCATE_EXISTING);
@@ -304,9 +296,42 @@ public class Principal extends JFrame {
 					} catch (IOException e1) {
 						
 						e1.printStackTrace();
-					}	
-					        
+					}						        
+				}
 			}
+		});
+		
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+					
+				if(tfArquivo.getText().isEmpty()) {
+					try {
+					EscolheArquivo.setEnabled(true);
+					EscolheArquivo.setVisible(true);
+					File file = new File(getArquivo(EscolheArquivo));
+					file = new File(file.getParentFile(), file.getName());
+					}catch(NullPointerException er) {
+						
+					}
+				}else {
+					String arquivo = "" + tfArquivo.getText();								
+					try {
+						//Limpa arquivo
+						BufferedWriter bf = Files.newBufferedWriter(Path.of(arquivo), StandardOpenOption.TRUNCATE_EXISTING);
+						//Reescreve arqivo
+						BufferedWriter buffWrite = new BufferedWriter(new FileWriter(tfArquivo.getText(), true));						
+						buffWrite.write(tfCodigo.getText());
+						buffWrite.close();
+						
+					} catch (IOException e1) {
+						
+						e1.printStackTrace();
+					}						        
+				}
+			}
+					
 		});
 		btnSalvar.setIcon(new ImageIcon(Principal.class.getResource("/icones/opcao-de-salvar-arquivo.png")));
 		btnSalvar.setBounds(252, 0, 125, 45);
@@ -376,6 +401,8 @@ public class Principal extends JFrame {
 		
 		btnEquipe.setBounds(915, 0, 105, 45);
 		contentPane.add(btnEquipe);
+		
+		
 		
 	}
 	
