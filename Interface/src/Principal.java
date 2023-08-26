@@ -148,7 +148,7 @@ public class Principal extends JFrame {
 		TextArea tfMensagens = new TextArea();
 		tfMensagens.setMinimumSize(new Dimension(0, 80));
 		tfMensagens.setFont(new Font("Dialog", Font.PLAIN, 14));
-		tfMensagens.setEditable(true);
+		tfMensagens.setEditable(false);
 		tfMensagens.setBounds(0, 441, 1088, 162);
 		//contentPane.add(tfMensagens);
 		
@@ -281,8 +281,26 @@ public class Principal extends JFrame {
 		btnNovo.getActionMap().put("Salvar", new AbstractAction(){
 			public void actionPerformed(ActionEvent e){
 				
-				if(tfArquivo.getText().isEmpty()) {
+				if(tfArquivo.getText().isEmpty()) {					
+					EscolheArquivo.setEnabled(true);
+					EscolheArquivo.setVisible(true);
 					
+					String arquivo = getArquivo(EscolheArquivo);					
+					
+					try {
+						//Limpa arquivo
+						BufferedWriter bf = Files.newBufferedWriter(Path.of(arquivo), StandardOpenOption.TRUNCATE_EXISTING);
+						//Reescreve arqivo
+						BufferedWriter buffWrite = new BufferedWriter(new FileWriter(arquivo, true));						
+						buffWrite.write(tfCodigo.getText());
+						buffWrite.close();
+						
+					} catch (IOException e1) {						
+						e1.printStackTrace();
+					}catch(NullPointerException e2) {
+						
+					}
+					tfArquivo.setText(arquivo);
 				}else {
 					String arquivo = "" + tfArquivo.getText();								
 					try {
@@ -302,19 +320,28 @@ public class Principal extends JFrame {
 		});
 		
 		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {	
 				
-				
-					
-				if(tfArquivo.getText().isEmpty()) {
-					try {
+				if(tfArquivo.getText().isEmpty()) {					
 					EscolheArquivo.setEnabled(true);
 					EscolheArquivo.setVisible(true);
-					File file = new File(getArquivo(EscolheArquivo));
-					file = new File(file.getParentFile(), file.getName());
-					}catch(NullPointerException er) {
+					
+					String arquivo = getArquivo(EscolheArquivo);					
+					
+					try {
+						//Limpa arquivo
+						BufferedWriter bf = Files.newBufferedWriter(Path.of(arquivo), StandardOpenOption.TRUNCATE_EXISTING);
+						//Reescreve arqivo
+						BufferedWriter buffWrite = new BufferedWriter(new FileWriter(arquivo, true));						
+						buffWrite.write(tfCodigo.getText());
+						buffWrite.close();
+						
+					} catch (IOException e1) {						
+						e1.printStackTrace();
+					}catch(NullPointerException e2) {
 						
 					}
+					tfArquivo.setText(arquivo);
 				}else {
 					String arquivo = "" + tfArquivo.getText();								
 					try {
