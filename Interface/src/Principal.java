@@ -1,57 +1,49 @@
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
+
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
+
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 import java.awt.TextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.UIManager;
+
 import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.awt.Font;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
-import javax.swing.JSlider;
+
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+
 import javax.swing.JSplitPane;
-import javax.swing.JScrollBar;
+
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.Dimension;
-import java.awt.Rectangle;
+import javax.swing.SwingConstants;
+
 
 public class Principal extends JFrame {
 
@@ -103,15 +95,6 @@ public class Principal extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JFileChooser EscolheArquivo = new JFileChooser();
-		EscolheArquivo.setBackground(new Color(128, 128, 128));
-		EscolheArquivo.setBorder(new LineBorder(new Color(0, 0, 0)));
-		EscolheArquivo.setForeground(new Color(128, 128, 128));
-		EscolheArquivo.setEnabled(false);
-		EscolheArquivo.setVisible(false);
-		EscolheArquivo.setBounds(423, 66, 567, 304);
-		contentPane.add(EscolheArquivo);
-		
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		splitPane.setBounds(10, 66, 1079, 535);
@@ -125,14 +108,22 @@ public class Principal extends JFrame {
 		
 		//tfCodigo.setBounds(29, 57, 1031, 364);	
 		
+		JFileChooser EscolheArquivo = new JFileChooser();
+		EscolheArquivo.setEnabled(false);
+		EscolheArquivo.setBackground(new Color(128, 128, 128));
+		EscolheArquivo.setBorder(new LineBorder(new Color(0, 0, 0)));
+		EscolheArquivo.setForeground(new Color(128, 128, 128));
+		EscolheArquivo.setVisible(false);
+		EscolheArquivo.setBounds(423, 66, 567, 304);
+		contentPane.add(EscolheArquivo);
+		//contentPane.add(scrollPane);
+		
 		JScrollPane scrollPane = new JScrollPane(tfCodigo);
 		scrollPane.setBorder(null);
 		scrollPane.setViewportBorder(null);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setBounds(10, 56, 1078, 361);
-		//contentPane.add(scrollPane);
-		
 		
 		tfArquivo = new JTextField();
 		tfArquivo.setBorder(null);
@@ -158,6 +149,7 @@ public class Principal extends JFrame {
 		splitPane.setDividerLocation(300);
 		splitPane.setBottomComponent(tfMensagens);
 		contentPane.add(splitPane);
+		
 		
 		//###### Funçoes dos botoes ########
 		
@@ -186,13 +178,6 @@ public class Principal extends JFrame {
 		
 		btnNovo.setBounds(0, 0, 120, 45);
 		contentPane.add(btnNovo);
-		
-		//---------
-		
-		//botao abrir
-		
-		JButton btnAbrir = new JButton("Abrir[ctrl + o]");
-		btnAbrir.setIcon(new ImageIcon(Principal.class.getResource("/icones/pasta-aberta.png")));
 		
 		btnNovo.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control O"), "Abrir");
 		btnNovo.getActionMap().put("Abrir", new AbstractAction(){
@@ -231,6 +216,55 @@ public class Principal extends JFrame {
 		     }
 
 		  });
+		
+		btnNovo.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control S"), "Salvar");
+		btnNovo.getActionMap().put("Salvar", new AbstractAction(){
+			public void actionPerformed(ActionEvent e){
+				
+				if(tfArquivo.getText().isEmpty()) {					
+					EscolheArquivo.setEnabled(true);
+					EscolheArquivo.setVisible(true);
+					
+					String arquivo = getArquivo(EscolheArquivo);					
+					
+					try {
+						//Limpa arquivo
+						BufferedWriter bf = Files.newBufferedWriter(Path.of(arquivo), StandardOpenOption.TRUNCATE_EXISTING);
+						//Reescreve arqivo
+						BufferedWriter buffWrite = new BufferedWriter(new FileWriter(arquivo, true));						
+						buffWrite.write(tfCodigo.getText());
+						buffWrite.close();
+						
+					} catch (IOException e1) {						
+						e1.printStackTrace();
+					}catch(NullPointerException e2) {
+						
+					}
+					tfArquivo.setText(arquivo);
+				}else {
+					String arquivo = "" + tfArquivo.getText();								
+					try {
+						//Limpa arquivo
+						BufferedWriter bf = Files.newBufferedWriter(Path.of(arquivo), StandardOpenOption.TRUNCATE_EXISTING);
+						//Reescreve arqivo
+						BufferedWriter buffWrite = new BufferedWriter(new FileWriter(tfArquivo.getText(), true));						
+						buffWrite.write(tfCodigo.getText());
+						buffWrite.close();
+						
+					} catch (IOException e1) {
+						
+						e1.printStackTrace();
+					}						        
+				}
+			}
+		});
+		
+		//---------
+		
+		//botao abrir
+		
+		JButton btnAbrir = new JButton("Abrir[ctrl + o]");
+		btnAbrir.setIcon(new ImageIcon(Principal.class.getResource("/icones/pasta-aberta.png")));
 		
 		btnAbrir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -276,48 +310,6 @@ public class Principal extends JFrame {
 		//botao salvar
 		
 		JButton btnSalvar = new JButton("Salvar[ctrl + s]");
-		
-		btnNovo.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control S"), "Salvar");
-		btnNovo.getActionMap().put("Salvar", new AbstractAction(){
-			public void actionPerformed(ActionEvent e){
-				
-				if(tfArquivo.getText().isEmpty()) {					
-					EscolheArquivo.setEnabled(true);
-					EscolheArquivo.setVisible(true);
-					
-					String arquivo = getArquivo(EscolheArquivo);					
-					
-					try {
-						//Limpa arquivo
-						BufferedWriter bf = Files.newBufferedWriter(Path.of(arquivo), StandardOpenOption.TRUNCATE_EXISTING);
-						//Reescreve arqivo
-						BufferedWriter buffWrite = new BufferedWriter(new FileWriter(arquivo, true));						
-						buffWrite.write(tfCodigo.getText());
-						buffWrite.close();
-						
-					} catch (IOException e1) {						
-						e1.printStackTrace();
-					}catch(NullPointerException e2) {
-						
-					}
-					tfArquivo.setText(arquivo);
-				}else {
-					String arquivo = "" + tfArquivo.getText();								
-					try {
-						//Limpa arquivo
-						BufferedWriter bf = Files.newBufferedWriter(Path.of(arquivo), StandardOpenOption.TRUNCATE_EXISTING);
-						//Reescreve arqivo
-						BufferedWriter buffWrite = new BufferedWriter(new FileWriter(tfArquivo.getText(), true));						
-						buffWrite.write(tfCodigo.getText());
-						buffWrite.close();
-						
-					} catch (IOException e1) {
-						
-						e1.printStackTrace();
-					}						        
-				}
-			}
-		});
 		
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	
@@ -407,11 +399,6 @@ public class Principal extends JFrame {
 		btnCompilar.setBounds(790, 0, 120, 45);
 		contentPane.add(btnCompilar);
 		
-		//---------------
-		//Equipe
-		JButton btnEquipe = new JButton("Equipe[F1]");
-		btnEquipe.setIcon(new ImageIcon(Principal.class.getResource("/icones/equipe.png")));
-		
 		btnCompilar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F1"), "Equipe");
 		btnCompilar.getActionMap().put("Equipe", new AbstractAction(){
 			public void actionPerformed(ActionEvent e){
@@ -419,6 +406,11 @@ public class Principal extends JFrame {
 		     }
 
 		  });
+		
+		//---------------
+		//Equipe
+		JButton btnEquipe = new JButton("Equipe[F1]");
+		btnEquipe.setIcon(new ImageIcon(Principal.class.getResource("/icones/equipe.png")));
 		
 		btnEquipe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -428,6 +420,12 @@ public class Principal extends JFrame {
 		
 		btnEquipe.setBounds(915, 0, 105, 45);
 		contentPane.add(btnEquipe);
+		
+		
+		
+		
+		
+		
 		
 		
 		
