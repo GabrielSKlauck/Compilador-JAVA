@@ -18,6 +18,7 @@ import java.awt.TextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 
 
@@ -43,6 +44,9 @@ import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.Dimension;
 import javax.swing.SwingConstants;
+import javax.swing.JToolBar;
+import java.awt.Rectangle;
+import java.awt.Component;
 
 
 public class Principal extends JFrame {
@@ -93,7 +97,7 @@ public class Principal extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(new BorderLayout());
 		
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
@@ -125,6 +129,7 @@ public class Principal extends JFrame {
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setBounds(10, 56, 1078, 361);
 		
+		
 		tfArquivo = new JTextField();
 		tfArquivo.setBorder(null);
 		tfArquivo.setCaretColor(Color.WHITE);
@@ -133,11 +138,11 @@ public class Principal extends JFrame {
 		tfArquivo.setEditable(false);
 		tfArquivo.setBackground(new Color(240, 240, 240));
 		tfArquivo.setBounds(10, 625, 322, 25);
-		contentPane.add(tfArquivo);
+		contentPane.add(tfArquivo, BorderLayout.SOUTH);
 		tfArquivo.setColumns(10);
 		
 		TextArea tfMensagens = new TextArea();
-		tfMensagens.setMinimumSize(new Dimension(0, 80));
+		tfMensagens.setMinimumSize(new Dimension(0, 110));
 		tfMensagens.setFont(new Font("Dialog", Font.PLAIN, 14));
 		tfMensagens.setEditable(false);
 		tfMensagens.setBounds(0, 441, 1088, 162);
@@ -151,10 +156,24 @@ public class Principal extends JFrame {
 		contentPane.add(splitPane);
 		
 		
+		JToolBar toolBar = new JToolBar();
+		toolBar.setPreferredSize(new Dimension(120, 45));
+		toolBar.setMinimumSize(new Dimension(120, 45));
+		toolBar.setMaximumSize(new Dimension(120, 45));
+		toolBar.setFloatable(false);
+		toolBar.setBounds(0, 0, 120, 45);
+		contentPane.add(toolBar, BorderLayout.NORTH);
+		
 		//###### Funçoes dos botoes ########
 		
 		//Botao novo
 		JButton btnNovo = new JButton("Novo\r\n[crtl + n]");
+		btnNovo.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnNovo.setMinimumSize(new Dimension(120, 45));
+		btnNovo.setMaximumSize(new Dimension(120, 45));
+		btnNovo.setSize(new Dimension(120, 45));
+		btnNovo.setBounds(new Rectangle(0, 0, 120, 45));
+		toolBar.add(btnNovo);
 		btnNovo.setIcon(new ImageIcon(Principal.class.getResource("/icones/novo-documento.png")));
 		btnNovo.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
@@ -177,7 +196,6 @@ public class Principal extends JFrame {
 		});
 		
 		btnNovo.setBounds(0, 0, 120, 45);
-		contentPane.add(btnNovo);
 		
 		btnNovo.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control O"), "Abrir");
 		btnNovo.getActionMap().put("Abrir", new AbstractAction(){
@@ -264,6 +282,9 @@ public class Principal extends JFrame {
 		//botao abrir
 		
 		JButton btnAbrir = new JButton("Abrir[ctrl + o]");
+		btnAbrir.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnAbrir.setMaximumSize(new Dimension(120, 45));
+		toolBar.add(btnAbrir);
 		btnAbrir.setIcon(new ImageIcon(Principal.class.getResource("/icones/pasta-aberta.png")));
 		
 		btnAbrir.addActionListener(new ActionListener() {
@@ -304,12 +325,14 @@ public class Principal extends JFrame {
 			}
 		});
 		btnAbrir.setBounds(125, 0, 120, 45);
-		contentPane.add(btnAbrir);
 		
 		//--------------
 		//botao salvar
 		
 		JButton btnSalvar = new JButton("Salvar[ctrl + s]");
+		btnSalvar.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnSalvar.setMaximumSize(new Dimension(120, 45));
+		toolBar.add(btnSalvar);
 		
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	
@@ -354,31 +377,39 @@ public class Principal extends JFrame {
 		});
 		btnSalvar.setIcon(new ImageIcon(Principal.class.getResource("/icones/opcao-de-salvar-arquivo.png")));
 		btnSalvar.setBounds(252, 0, 125, 45);
-		contentPane.add(btnSalvar);
 		
 		//--------------------------
 		
 		//##########  Ja vem por padrao  #################
 		
 		JButton btnCopiar = new JButton("Copiar[ctrl + c]");		
+		btnCopiar.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnCopiar.setMaximumSize(new Dimension(120, 45));
+		toolBar.add(btnCopiar);
 		btnCopiar.setIcon(new ImageIcon(Principal.class.getResource("/icones/copia-de.png")));
 		btnCopiar.setBounds(382, 0, 125, 45);
-		contentPane.add(btnCopiar);
 		
 		JButton btnColar = new JButton("Colar[ctrl + v]");
+		btnColar.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnColar.setMaximumSize(new Dimension(120, 45));
+		toolBar.add(btnColar);
 		btnColar.setIcon(new ImageIcon(Principal.class.getResource("/icones/cola.png")));
 		btnColar.setBounds(512, 0, 122, 45);
-		contentPane.add(btnColar);
 		
 		JButton btnRecortar = new JButton("Recortar[ctrl + x]");
+		btnRecortar.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnRecortar.setMaximumSize(new Dimension(120, 45));
+		toolBar.add(btnRecortar);
 		btnRecortar.setIcon(new ImageIcon(Principal.class.getResource("/icones/tesouras-e-linhas-de-recorte.png")));
 		btnRecortar.setBounds(641, 0, 140, 45);
-		contentPane.add(btnRecortar);
 		
 		//####################
 		
 		//Compilacao
 		JButton btnCompilar = new JButton("Compilar[F7]");
+		btnCompilar.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnCompilar.setMaximumSize(new Dimension(120, 45));
+		toolBar.add(btnCompilar);
 		btnCompilar.setIcon(new ImageIcon(Principal.class.getResource("/icones/engrenagem.png")));
 		btnCompilar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -397,19 +428,13 @@ public class Principal extends JFrame {
 		
 		
 		btnCompilar.setBounds(790, 0, 120, 45);
-		contentPane.add(btnCompilar);
-		
-		btnCompilar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F1"), "Equipe");
-		btnCompilar.getActionMap().put("Equipe", new AbstractAction(){
-			public void actionPerformed(ActionEvent e){
-		        tfMensagens.setText("Gabriel de Souza Klauck, Nycolly Miranda");
-		     }
-
-		  });
 		
 		//---------------
 		//Equipe
 		JButton btnEquipe = new JButton("Equipe[F1]");
+		btnEquipe.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnEquipe.setMaximumSize(new Dimension(120, 45));
+		toolBar.add(btnEquipe);
 		btnEquipe.setIcon(new ImageIcon(Principal.class.getResource("/icones/equipe.png")));
 		
 		btnEquipe.addActionListener(new ActionListener() {
@@ -419,7 +444,14 @@ public class Principal extends JFrame {
 		});
 		
 		btnEquipe.setBounds(915, 0, 105, 45);
-		contentPane.add(btnEquipe);
+		
+		btnCompilar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F1"), "Equipe");
+		btnCompilar.getActionMap().put("Equipe", new AbstractAction(){
+			public void actionPerformed(ActionEvent e){
+		        tfMensagens.setText("Gabriel de Souza Klauck, Nycolly Miranda");
+		     }
+
+		  });
 		
 		
 		
