@@ -30,6 +30,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.awt.Font;
@@ -235,47 +236,7 @@ public class Principal extends JFrame {
 
 		  });
 		
-		btnNovo.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control S"), "Salvar");
-		btnNovo.getActionMap().put("Salvar", new AbstractAction(){
-			public void actionPerformed(ActionEvent e){
-				
-				if(tfArquivo.getText().isEmpty()) {					
-					EscolheArquivo.setEnabled(true);
-					EscolheArquivo.setVisible(true);
-					
-					String arquivo = getArquivo(EscolheArquivo);					
-					
-					try {
-						//Limpa arquivo
-						BufferedWriter bf = Files.newBufferedWriter(Path.of(arquivo), StandardOpenOption.TRUNCATE_EXISTING);
-						//Reescreve arqivo
-						BufferedWriter buffWrite = new BufferedWriter(new FileWriter(arquivo, true));						
-						buffWrite.write(tfCodigo.getText());
-						buffWrite.close();
-						
-					} catch (IOException e1) {						
-						e1.printStackTrace();
-					}catch(NullPointerException e2) {
-						
-					}
-					tfArquivo.setText(arquivo);
-				}else {
-					String arquivo = "" + tfArquivo.getText();								
-					try {
-						//Limpa arquivo
-						BufferedWriter bf = Files.newBufferedWriter(Path.of(arquivo), StandardOpenOption.TRUNCATE_EXISTING);
-						//Reescreve arqivo
-						BufferedWriter buffWrite = new BufferedWriter(new FileWriter(tfArquivo.getText(), true));						
-						buffWrite.write(tfCodigo.getText());
-						buffWrite.close();
-						
-					} catch (IOException e1) {
-						
-						e1.printStackTrace();
-					}						        
-				}
-			}
-		});
+		
 		
 		//---------
 		
@@ -334,8 +295,59 @@ public class Principal extends JFrame {
 		btnSalvar.setMaximumSize(new Dimension(120, 45));
 		toolBar.add(btnSalvar);
 		
+		btnNovo.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control S"), "Salvar");
+		btnNovo.getActionMap().put("Salvar", new AbstractAction(){
+			public void actionPerformed(ActionEvent e){
+				
+				if(tfArquivo.getText().equals("Sem arquivo aberto")) {
+					return;
+				}
+				
+				if(tfArquivo.getText().isEmpty()) {					
+					EscolheArquivo.setEnabled(true);
+					EscolheArquivo.setVisible(true);
+					
+					String arquivo = getArquivo(EscolheArquivo);					
+					
+					try {
+						//Limpa arquivo
+						BufferedWriter bf = Files.newBufferedWriter(Path.of(arquivo), StandardOpenOption.TRUNCATE_EXISTING);
+						//Reescreve arqivo
+						BufferedWriter buffWrite = new BufferedWriter(new FileWriter(arquivo, true));						
+						buffWrite.write(tfCodigo.getText());
+						buffWrite.close();
+						
+					} catch (IOException e1) {						
+						e1.printStackTrace();
+					}catch(NullPointerException e2) {
+						
+					}
+					tfMensagens.setText("");
+					tfArquivo.setText(arquivo);
+				}else {
+					String arquivo = "" + tfArquivo.getText();								
+					try {
+						//Limpa arquivo
+						BufferedWriter bf = Files.newBufferedWriter(Path.of(arquivo), StandardOpenOption.TRUNCATE_EXISTING);
+						//Reescreve arqivo
+						BufferedWriter buffWrite = new BufferedWriter(new FileWriter(tfArquivo.getText(), true));						
+						buffWrite.write(tfCodigo.getText());
+						buffWrite.close();
+						
+					} catch (IOException e1) {
+						
+						e1.printStackTrace();
+					}						        
+				}
+			}
+		});
+		
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	
+				
+				if(tfArquivo.getText().equals("Sem arquivo aberto")) {
+					return;
+				}
 				
 				if(tfArquivo.getText().isEmpty()) {					
 					EscolheArquivo.setEnabled(true);
@@ -357,6 +369,7 @@ public class Principal extends JFrame {
 						
 					}
 					tfArquivo.setText(arquivo);
+					tfMensagens.setText("");
 				}else {
 					String arquivo = "" + tfArquivo.getText();								
 					try {
@@ -445,22 +458,13 @@ public class Principal extends JFrame {
 		
 		btnEquipe.setBounds(915, 0, 105, 45);
 		
-		btnCompilar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F1"), "Equipe");
-		btnCompilar.getActionMap().put("Equipe", new AbstractAction(){
+		btnEquipe.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F1"), "Equipe");
+		btnEquipe.getActionMap().put("Equipe", new AbstractAction(){
 			public void actionPerformed(ActionEvent e){
 		        tfMensagens.setText("Gabriel de Souza Klauck, Nycolly Miranda");
 		     }
 
-		  });
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		  });		
 	}
 	
 	//Metodo seleciona um arquivo para abrir e retorna o caminho desse arquivo
