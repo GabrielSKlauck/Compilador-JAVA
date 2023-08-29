@@ -134,7 +134,6 @@ public class Principal extends JFrame {
 		tfArquivo = new JTextField();
 		tfArquivo.setBorder(null);
 		tfArquivo.setCaretColor(Color.WHITE);
-		tfArquivo.setText("Sem arquivo aberto");
 		tfArquivo.setToolTipText("");
 		tfArquivo.setEditable(false);
 		tfArquivo.setBackground(new Color(240, 240, 240));
@@ -337,6 +336,7 @@ public class Principal extends JFrame {
 						BufferedWriter buffWrite = new BufferedWriter(new FileWriter(tfArquivo.getText(), true));						
 						buffWrite.write(tfCodigo.getText());
 						buffWrite.close();
+						tfMensagens.setText("");
 						
 					} catch (IOException e1) {
 						
@@ -383,6 +383,7 @@ public class Principal extends JFrame {
 						BufferedWriter buffWrite = new BufferedWriter(new FileWriter(tfArquivo.getText(), true));						
 						buffWrite.write(tfCodigo.getText());
 						buffWrite.close();
+						tfMensagens.setText("");
 						
 					} catch (IOException e1) {
 						
