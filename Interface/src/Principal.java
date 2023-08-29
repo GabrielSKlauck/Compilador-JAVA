@@ -198,8 +198,23 @@ public class Principal extends JFrame {
 		
 		btnNovo.setBounds(0, 0, 120, 45);
 		
-		btnNovo.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control O"), "Abrir");
-		btnNovo.getActionMap().put("Abrir", new AbstractAction(){
+		
+		
+		
+		
+		//---------
+		
+		//botao abrir
+		
+		JButton btnAbrir = new JButton("Abrir[ctrl + o]");
+		btnAbrir.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnAbrir.setMaximumSize(new Dimension(120, 45));
+		toolBar.add(btnAbrir);
+		btnAbrir.setIcon(new ImageIcon(Principal.class.getResource("/icones/pasta-aberta.png")));
+		
+		
+		btnAbrir.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control O"), "Abrir");
+		btnAbrir.getActionMap().put("Abrir", new AbstractAction(){
 			public void actionPerformed(ActionEvent e){
 				EscolheArquivo.setEnabled(true);
 				EscolheArquivo.setVisible(true);
@@ -236,17 +251,6 @@ public class Principal extends JFrame {
 
 		  });
 		
-		
-		
-		//---------
-		
-		//botao abrir
-		
-		JButton btnAbrir = new JButton("Abrir[ctrl + o]");
-		btnAbrir.setBorder(new LineBorder(new Color(0, 0, 0)));
-		btnAbrir.setMaximumSize(new Dimension(120, 45));
-		toolBar.add(btnAbrir);
-		btnAbrir.setIcon(new ImageIcon(Principal.class.getResource("/icones/pasta-aberta.png")));
 		
 		btnAbrir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -295,8 +299,8 @@ public class Principal extends JFrame {
 		btnSalvar.setMaximumSize(new Dimension(120, 45));
 		toolBar.add(btnSalvar);
 		
-		btnNovo.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control S"), "Salvar");
-		btnNovo.getActionMap().put("Salvar", new AbstractAction(){
+		btnSalvar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control S"), "Salvar");
+		btnSalvar.getActionMap().put("Salvar", new AbstractAction(){
 			public void actionPerformed(ActionEvent e){
 				
 				if(tfArquivo.getText().equals("Sem arquivo aberto")) {
@@ -468,7 +472,7 @@ public class Principal extends JFrame {
 	}
 	
 	//Metodo seleciona um arquivo para abrir e retorna o caminho desse arquivo
-	public static String getArquivo(JFileChooser escolha) {
+	private static String getArquivo(JFileChooser escolha) {
 		escolha.setFileFilter(new FileNameExtensionFilter("Arquivos *.txt", "txt"));
 		int returnVal = escolha.showOpenDialog(escolha);
 	    if (returnVal == JFileChooser.APPROVE_OPTION) {
