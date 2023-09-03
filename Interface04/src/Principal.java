@@ -43,6 +43,11 @@ import javax.swing.JSplitPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import Utilitarios.LexicalError;
+import Utilitarios.Lexico;
+import Utilitarios.Token;
+
 import java.awt.Dimension;
 import javax.swing.SwingConstants;
 import javax.swing.JToolBar;
@@ -431,14 +436,67 @@ public class Principal extends JFrame {
 		btnCompilar.setIcon(new ImageIcon(Principal.class.getResource("/icones/engrenagem.png")));
 		btnCompilar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tfMensagens.setText("Compilação de programas ainda não implementada");
+				Lexico lexico = new Lexico();
+				   lexico.setInput(tfCodigo.getText());
+				   try {
+				   Token t = null;
+				   while ( (t = lexico.nextToken()) != null ) {
+					  
+				     System.out.println(t.getPosition() + " " + t.getLexeme() + " " + t.getId()); 
+				     
+				     // só escreve o lexema, necessário escrever t.getId (), t.getPosition()
+				    
+				     // t.getId () - retorna o identificador da classe. Olhar Constants.java e adaptar, pois 
+					 // deve ser apresentada a classe por extenso
+				     // t.getPosition () - retorna a posição inicial do lexema no editor, necessário adaptar 
+					 // para mostrar a linha	
+
+				     // esse código apresenta os tokens enquanto não ocorrer erro
+				     // no entanto, os tokens devem ser apresentados SÓ se não ocorrer erro, necessário adaptar 
+					 // para atender o que foi solicitado		   
+				   }
+				   }
+				   catch ( LexicalError e1 ) {  // tratamento de erros
+				     System.out.println(e1.getMessage() + " em " + e1.getPosition());
+				 
+				     // e.getMessage() - retorna a mensagem de erro de SCANNER_ERRO (olhar ScannerConstants.java 
+					 // e adaptar conforme o enunciado da parte 2)
+				     // e.getPosition() - retorna a posição inicial do erro, tem que adaptar para mostrar a 
+					 // linha  
+				    } 
 			}
 		});
 		
 		btnCompilar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F7"), "Compilar");
 		btnCompilar.getActionMap().put("Compilar", new AbstractAction(){
 			public void actionPerformed(ActionEvent e){
-		        tfMensagens.setText("Compilaçao de programas ainda nao implementada");
+				Lexico lexico = new Lexico();
+				   lexico.setInput(tfCodigo.getText());
+				   try {
+				   Token t = null;
+				   while ( (t = lexico.nextToken()) != null ) {
+				     System.out.println(t.getLexeme()); 
+				     
+				     // só escreve o lexema, necessário escrever t.getId (), t.getPosition()
+				    
+				     // t.getId () - retorna o identificador da classe. Olhar Constants.java e adaptar, pois 
+					 // deve ser apresentada a classe por extenso
+				     // t.getPosition () - retorna a posição inicial do lexema no editor, necessário adaptar 
+					 // para mostrar a linha	
+
+				     // esse código apresenta os tokens enquanto não ocorrer erro
+				     // no entanto, os tokens devem ser apresentados SÓ se não ocorrer erro, necessário adaptar 
+					 // para atender o que foi solicitado		   
+				   }
+				   }
+				   catch ( LexicalError e1 ) {  // tratamento de erros
+				     System.out.println(e1.getMessage() + " em " + e1.getPosition());
+				 
+				     // e.getMessage() - retorna a mensagem de erro de SCANNER_ERRO (olhar ScannerConstants.java 
+					 // e adaptar conforme o enunciado da parte 2)
+				     // e.getPosition() - retorna a posição inicial do erro, tem que adaptar para mostrar a 
+					 // linha  
+				    } 
 		     }
 
 		  });
