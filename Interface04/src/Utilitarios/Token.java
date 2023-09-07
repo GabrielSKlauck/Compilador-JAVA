@@ -29,10 +29,15 @@ public class Token
         		return "cte_float";
         		
         	case 6:
-        		return "cte_string";
-        	
-        	case 7:
-        		return "do";
+        		return "cte_string";        	       	
+        }
+        
+        if(this.id >= 7 && this.id <= 17) {
+        	return "palavra reservada";
+        }
+        
+        if(this.id >= 18 && this.id <= 36) {
+        	return "caracter especial";
         }
         return "?";
     }

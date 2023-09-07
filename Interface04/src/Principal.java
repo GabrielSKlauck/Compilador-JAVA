@@ -33,6 +33,7 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.awt.Font;
 
 import javax.swing.AbstractAction;
@@ -436,13 +437,21 @@ public class Principal extends JFrame {
 		btnCompilar.setIcon(new ImageIcon(Principal.class.getResource("/icones/engrenagem.png")));
 		btnCompilar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Lexico lexico = new Lexico();
+				   String mostra = "";
+				   ArrayList<String> listaPala = new ArrayList<>();
+				   Lexico lexico = new Lexico();
+				   int linhaErro = 0;
+				   
 				   lexico.setInput(tfCodigo.getText());
 				   try {
+				   
+				   
 				   Token t = null;
 				   while ( (t = lexico.nextToken()) != null ) {
-					  
-				     System.out.println(t.getPosition() + " " + t.getLexeme() + " " + t.getId()); 
+					 listaPala.add(t.getLexeme());
+					 linhaErro = listaPala.lastIndexOf(t.getLexeme()) + 1;
+					 mostra += linhaErro + " - " + t.getLexeme() + " - " + t.getId() + "\n"; 
+				     tfMensagens.setText(mostra); 
 				     
 				     // só escreve o lexema, necessário escrever t.getId (), t.getPosition()
 				    
@@ -457,7 +466,7 @@ public class Principal extends JFrame {
 				   }
 				   }
 				   catch ( LexicalError e1 ) {  // tratamento de erros
-				     System.out.println(e1.getMessage() + " em " + e1.getPosition());
+				     tfMensagens.setText(e1.getMessage() + " em " + (linhaErro + 1) + "\n");
 				 
 				     // e.getMessage() - retorna a mensagem de erro de SCANNER_ERRO (olhar ScannerConstants.java 
 					 // e adaptar conforme o enunciado da parte 2)
