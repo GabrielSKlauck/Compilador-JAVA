@@ -3368,7 +3368,7 @@ public interface ScannerConstants
 
     String[] SCANNER_ERROR =
     {
-        "Caractere n�o esperado",
+        "Simbolo invalido",
         "",
         "",
         "Erro identificando cte_string",
@@ -3389,20 +3389,19 @@ public interface ScannerConstants
         "",
         "",
         "Erro identificando <ignorar>",
-        "Erro identificando id",
+        "Identificador inválido",
         "",
         "",
         "",
         "",
+        "",
+        "Constante_string inválida",
         "",
         "Erro identificando cte_string",
         "",
-        "Erro identificando cte_string",
         "",
         "",
-        "",
-        "Erro identificando cte_float",
-        "",
+        "Constante_int inválido",
         "",
         "",
         "",
@@ -3414,7 +3413,8 @@ public interface ScannerConstants
         "",
         "",
         "",
-        "Erro identificando cte_float"
+        "",
+        "Constante_float inválido"
     };
 
 }
