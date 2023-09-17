@@ -530,34 +530,94 @@ public class Principal extends JFrame {
 		btnCompilar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F7"), "Compilar");
 		btnCompilar.getActionMap().put("Compilar", new AbstractAction(){
 			public void actionPerformed(ActionEvent e){
+				String mostra = "";
+				ArrayList<String> listaLexos = new ArrayList<>();
+				
 				Lexico lexico = new Lexico();
-				   lexico.setInput(tfCodigo.getText());
-				   try {
-				   Token t = null;
-				   while ( (t = lexico.nextToken()) != null ) {
-				     System.out.println(t.getLexeme()); 
-				     
-				     // só escreve o lexema, necessário escrever t.getId (), t.getPosition()
-				    
-				     // t.getId () - retorna o identificador da classe. Olhar Constants.java e adaptar, pois 
-					 // deve ser apresentada a classe por extenso
-				     // t.getPosition () - retorna a posição inicial do lexema no editor, necessário adaptar 
-					 // para mostrar a linha	
+				String erroLex = "";
+				String per = tfCodigo.getText();
+				per = per.replaceFirst("\r", "");
+				int linha = 0;
 
-				     // esse código apresenta os tokens enquanto não ocorrer erro
-				     // no entanto, os tokens devem ser apresentados SÓ se não ocorrer erro, necessário adaptar 
-					 // para atender o que foi solicitado		   
-				   }
-				   }
-				   catch ( LexicalError e1 ) {  // tratamento de erros
-				     System.out.println(e1.getMessage() + " em " + e1.getPosition());
-				 
-				     // e.getMessage() - retorna a mensagem de erro de SCANNER_ERRO (olhar ScannerConstants.java 
-					 // e adaptar conforme o enunciado da parte 2)
-				     // e.getPosition() - retorna a posição inicial do erro, tem que adaptar para mostrar a 
-					 // linha  
-				    } 
-		     }
+				lexico.setInput(tfCodigo.getText());							
+				erroLex = tfCodigo.getText();
+				try {
+
+					Token t = null;
+					
+					while ((t = lexico.nextToken()) != null) {
+						
+						if(per.charAt(0) == '\n') {
+							
+							 do {
+							       per = per.replaceFirst("\n", "");
+							       listaLexos.add("");
+							 }while(per.charAt(0) == '\n');
+							 
+							 listaLexos.remove(listaLexos.size() - 1);
+							 listaLexos.add(t.getLexeme());
+						     per = per.replaceFirst(t.getLexeme(), "");
+						}else {
+							listaLexos.add(t.getLexeme());
+					        per = per.replaceFirst(t.getLexeme(), "");
+						}
+					
+						
+						
+						/*//ELSE ANTIGO
+						else {
+							for(int i = 0; i < per.length() - 1; i++) {
+								if(per.charAt(i) == '\n' && per.charAt(i + 1) == '\n') {
+									
+									listaLexos.add("");
+									
+								}else if(per.charAt(i) != '\n') {
+									
+									listaLexos.add(t.getLexeme());
+									per = per.replaceFirst(t.getLexeme(), "");
+									per = per.replaceFirst("\n", "");
+									per = per.replaceFirst("\n", "");
+									
+									break;
+								}else {
+									per = per.replaceFirst("\n", "");
+								}
+							}
+						}*/ 
+
+						//listaLexos.add(t.getLexeme());
+						linha = listaLexos.lastIndexOf(t.getLexeme()) + 1;
+						mostra += linha + "    " + t.getId() + "    " + t.getLexeme() + "\n";
+
+					}					
+					
+					/*for(int i = 0; i < per.length() - 1; i++) {
+						if(per.charAt(i) == '\n' && per.charAt(i + 1) == '\n') {
+							linhas.add("");
+							System.out.println("certio");
+						}
+					}*/
+					
+					mostra += "Programa compilado com sucesso";
+					tfMensagens.setText(mostra);
+					
+				} catch (LexicalError e1) { // tratamento de erros
+					
+					if(e1.getMessage().equals("Simbolo invalido")) {
+						tfMensagens.setText("Linha " + (linha + 1)+ ": " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage());
+					}else {
+						tfMensagens.setText(e1.getMessage() + " na linha " + (linha + 1));
+					}
+					
+
+					// e.getMessage() - retorna a mensagem de erro de SCANNER_ERRO (olhar
+					// ScannerConstants.java
+					// e adaptar conforme o enunciado da parte 2)
+					// e.getPosition() - retorna a posição inicial do erro, tem que adaptar para
+					// mostrar a
+					// linha
+				}
+			}
 
 		  });
 		
