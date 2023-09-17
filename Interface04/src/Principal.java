@@ -454,26 +454,44 @@ public class Principal extends JFrame {
 					
 					while ((t = lexico.nextToken()) != null) {
 						
-						if(per.charAt(0) != '\n') {
-							per = per.replaceFirst(t.getLexeme(), "");
-							listaLexos.add(t.getLexeme());
+						if(per.charAt(0) == '\n') {
+							
+							 do {
+							       per = per.replaceFirst("\n", "");
+							       listaLexos.add("");
+							 }while(per.charAt(0) == '\n');
+							 
+							 listaLexos.remove(listaLexos.size() - 1);
+							 listaLexos.add(t.getLexeme());
+						     per = per.replaceFirst(t.getLexeme(), "");
 						}else {
+							listaLexos.add(t.getLexeme());
+					        per = per.replaceFirst(t.getLexeme(), "");
+						}
+					
+						
+						
+						/*//ELSE ANTIGO
+						else {
 							for(int i = 0; i < per.length() - 1; i++) {
 								if(per.charAt(i) == '\n' && per.charAt(i + 1) == '\n') {
+									
 									listaLexos.add("");
-									System.out.println("certio");
+									
 								}else if(per.charAt(i) != '\n') {
+									
 									listaLexos.add(t.getLexeme());
+									per = per.replaceFirst(t.getLexeme(), "");
 									per = per.replaceFirst("\n", "");
 									per = per.replaceFirst("\n", "");
+									
 									break;
+								}else {
+									per = per.replaceFirst("\n", "");
 								}
 							}
-						}
-						
-						
-						
-						
+						}*/ 
+
 						//listaLexos.add(t.getLexeme());
 						linha = listaLexos.lastIndexOf(t.getLexeme()) + 1;
 						mostra += linha + "    " + t.getId() + "    " + t.getLexeme() + "\n";
