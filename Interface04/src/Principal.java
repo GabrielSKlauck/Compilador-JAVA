@@ -437,13 +437,13 @@ public class Principal extends JFrame {
 		btnCompilar.setIcon(new ImageIcon(Principal.class.getResource("/icones/engrenagem.png")));
 		btnCompilar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String mostra = "";
-				ArrayList<String> listaLexos = new ArrayList<>();
-				
-				Lexico lexico = new Lexico();
+				String mostra = ""; //acumula a linha o lexema e a classe
+				ArrayList<String> listaLexos = new ArrayList<>(); //lista de lexemas, guia para apresentaçao							
+				Lexico lexico = new Lexico();				
 				String erroLex = "";
-				String per = tfCodigo.getText();
+				String per = tfCodigo.getText(); //pega o texto do tfCodigo, serve como guia para saber oque alterar e excluir
 				per = per.replaceFirst("\r", "");
+				per = per.replaceAll("\t", "");
 				int linha = 0;
 
 				lexico.setInput(tfCodigo.getText());							
@@ -454,7 +454,8 @@ public class Principal extends JFrame {
 					
 					while ((t = lexico.nextToken()) != null) {
 						
-						if(per.charAt(0) == '\n') {
+						
+						if(per.charAt(0) == '\n') { //##Remove quebras de linhas##
 							
 							 do {
 							       per = per.replaceFirst("\n", "");
@@ -465,12 +466,19 @@ public class Principal extends JFrame {
 							 listaLexos.add(t.getLexeme());
 						     per = per.replaceFirst(t.getLexeme(), "");
 						}else {
+							if(per.charAt(0) == ' ') { //##Remove espacos em branco##
+								do {
+								       per = per.replaceFirst(" ", "");
+								       
+								 }while(per.charAt(0) == ' ');
+								 								 								 
+							}
 							listaLexos.add(t.getLexeme());
 					        per = per.replaceFirst(t.getLexeme(), "");
 						}
 					
 						
-						
+						//Segunda versao do contador
 						/*//ELSE ANTIGO
 						else {
 							for(int i = 0; i < per.length() - 1; i++) {
@@ -491,17 +499,16 @@ public class Principal extends JFrame {
 								}
 							}
 						}*/ 
-
-						//listaLexos.add(t.getLexeme());
-						linha = listaLexos.lastIndexOf(t.getLexeme()) + 1;
-						mostra += linha + "    " + t.getId() + "    " + t.getLexeme() + "\n";
-
-					}					
+											
+							linha = listaLexos.lastIndexOf(t.getLexeme()) + 1;
+							mostra += linha + "    " + t.getId() + "    " + t.getLexeme() + "\n";
+						}															
 					
+					//Primeira versao do contador
 					/*for(int i = 0; i < per.length() - 1; i++) {
 						if(per.charAt(i) == '\n' && per.charAt(i + 1) == '\n') {
 							linhas.add("");
-							System.out.println("certio");
+							System.out.println("certo"); 
 						}
 					}*/
 					
@@ -511,10 +518,11 @@ public class Principal extends JFrame {
 				} catch (LexicalError e1) { // tratamento de erros
 					
 					if(e1.getMessage().equals("Simbolo invalido")) {
-						tfMensagens.setText("Linha " + (linha + 1)+ ": " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage());
+						tfMensagens.setText("Linha " + (linha + 1) + ": " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage());
 					}else {
-						tfMensagens.setText(e1.getMessage() + " na linha " + (linha + 1));
+						tfMensagens.setText("Linha " + (linha + 1) + ": " + e1.getMessage());
 					}
+					
 					
 
 					// e.getMessage() - retorna a mensagem de erro de SCANNER_ERRO (olhar

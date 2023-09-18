@@ -3388,7 +3388,7 @@ public interface ScannerConstants
         "",
         "",
         "",
-        "Erro identificando <ignorar>",
+        "Comentario de bloco nao finalizado",
         "Identificador inválido",
         "",
         "",
