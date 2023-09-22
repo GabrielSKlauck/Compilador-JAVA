@@ -33,6 +33,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.awt.Font;
 
 import javax.swing.AbstractAction;
@@ -437,10 +439,18 @@ public class Principal extends JFrame {
 		btnCompilar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String mostra = ""; //acumula a linha o lexema e a classe
-				ArrayList<String> listaLexos = new ArrayList<>(); //lista de lexemas, guia para apresentaçao							
+				ArrayList<String> listaLexos = new ArrayList<>(); //lista de lexemas, guia para apresentaçao
+				
+				HashMap<Integer, String> listaLexos2 = new HashMap<>();
+				int oriLinha = 1;
+				String mostraH = "";
+				Lexico lexicoApre = new Lexico();	
+				lexicoApre.setInput(tfCodigo.getText());
+				
 				Lexico lexico = new Lexico();				
 				String erroLex = "";
 				String per = tfCodigo.getText(); //pega o texto do tfCodigo, serve como guia para saber oque alterar e excluir
+				
 				per = per.replaceFirst("\r", "");
 				per = per.replaceAll("\t", "");
 				int linha = 0;
@@ -459,10 +469,15 @@ public class Principal extends JFrame {
 							 do {
 							       per = per.replaceFirst("\n", "");
 							       listaLexos.add("");
+							       oriLinha++;
+							       listaLexos2.put(oriLinha, "");
 							 }while(per.charAt(0) == '\n');
 							 
 							 listaLexos.remove(listaLexos.size() - 1);
 							 listaLexos.add(t.getLexeme());
+							 oriLinha--;
+							 listaLexos2.put(oriLinha, t.getLexeme());
+							 oriLinha++;
 						     per = per.replaceFirst(t.getLexeme(), "");
 						}else {
 							if(per.charAt(0) == ' ') { //##Remove espacos em branco##
@@ -472,7 +487,10 @@ public class Principal extends JFrame {
 								 }while(per.charAt(0) == ' ');
 								 								 								 
 							}
+							
 							listaLexos.add(t.getLexeme());
+							listaLexos2.put(oriLinha, t.getLexeme());
+							oriLinha++;
 					        per = per.replaceFirst(t.getLexeme(), "");
 						}
 					
@@ -501,7 +519,19 @@ public class Principal extends JFrame {
 											
 							linha = listaLexos.lastIndexOf(t.getLexeme()) + 1;
 							mostra += linha + "    " + t.getId() + "    " + t.getLexeme() + "\n";
-						}															
+							
+						}
+					
+					
+					for (Map.Entry<Integer, String> entrada : listaLexos2.entrySet()) { 
+						t = lexicoApre.nextToken();
+						if(t != null) {
+							mostraH += entrada.getKey() + "   " + t.getId() + "   " + entrada.getValue() + "\n";
+							continue;
+						}
+						
+						
+					}
 					
 					//Primeira versao do contador
 					/*for(int i = 0; i < per.length() - 1; i++) {
@@ -513,6 +543,7 @@ public class Principal extends JFrame {
 					
 					mostra += "Programa compilado com sucesso";
 					tfMensagens.setText(mostra);
+					tfMensagens.setText(mostra + "\n" + mostraH);
 					
 				} catch (LexicalError e1) { // tratamento de erros
 					
@@ -538,7 +569,12 @@ public class Principal extends JFrame {
 		btnCompilar.getActionMap().put("Compilar", new AbstractAction(){
 			public void actionPerformed(ActionEvent e){
 				String mostra = ""; //acumula a linha o lexema e a classe
-				ArrayList<String> listaLexos = new ArrayList<>(); //lista de lexemas, guia para apresentaçao							
+				ArrayList<String> listaLexos = new ArrayList<>(); //lista de lexemas, guia para apresentaçao
+				
+				HashMap<Integer, String> listaLexos2 = new HashMap<>();
+				int oriLinha = 1;
+				String mostraH = "";
+				
 				Lexico lexico = new Lexico();				
 				String erroLex = "";
 				String per = tfCodigo.getText(); //pega o texto do tfCodigo, serve como guia para saber oque alterar e excluir
@@ -560,10 +596,13 @@ public class Principal extends JFrame {
 							 do {
 							       per = per.replaceFirst("\n", "");
 							       listaLexos.add("");
+							       listaLexos2.put(oriLinha, "");
 							 }while(per.charAt(0) == '\n');
 							 
 							 listaLexos.remove(listaLexos.size() - 1);
 							 listaLexos.add(t.getLexeme());
+							 listaLexos2.put(oriLinha, t.getLexeme());
+							 oriLinha++;
 						     per = per.replaceFirst(t.getLexeme(), "");
 						}else {
 							if(per.charAt(0) == ' ') { //##Remove espacos em branco##
@@ -602,7 +641,13 @@ public class Principal extends JFrame {
 											
 							linha = listaLexos.lastIndexOf(t.getLexeme()) + 1;
 							mostra += linha + "    " + t.getId() + "    " + t.getLexeme() + "\n";
-						}															
+						}
+					
+					
+					for (Map.Entry<Integer, String> entrada : listaLexos2.entrySet()) { 
+						mostraH = entrada.getValue();
+					
+					}
 					
 					//Primeira versao do contador
 					/*for(int i = 0; i < per.length() - 1; i++) {
@@ -614,6 +659,7 @@ public class Principal extends JFrame {
 					
 					mostra += "Programa compilado com sucesso";
 					tfMensagens.setText(mostra);
+					tfMensagens.setText(mostra + "\n" + mostraH);
 					
 				} catch (LexicalError e1) { // tratamento de erros
 					
