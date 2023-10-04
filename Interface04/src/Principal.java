@@ -440,16 +440,21 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String mostra = ""; //acumula a linha o lexema e a classe
 				ArrayList<String> listaLexos = new ArrayList<>(); //lista de lexemas, guia para apresentaçao
+				String aux = "";
+				String auxApre[];
 				
 				HashMap<Integer, String> listaLexos2 = new HashMap<>();
 				int oriLinha = 1;
 				String mostraH = "";
 				Lexico lexicoApre = new Lexico();	
 				lexicoApre.setInput(tfCodigo.getText());
+				String auxHash = "";
 				
 				Lexico lexico = new Lexico();				
 				String erroLex = "";
 				String per = tfCodigo.getText(); //pega o texto do tfCodigo, serve como guia para saber oque alterar e excluir
+				String lexemaErrado;
+				
 				
 				per = per.replaceFirst("\r", "");
 				per = per.replaceAll("\t", "");
@@ -469,15 +474,15 @@ public class Principal extends JFrame {
 							 do {
 							       per = per.replaceFirst("\n", "");
 							       listaLexos.add("");
-							       oriLinha++;
-							       listaLexos2.put(oriLinha, "");
+							       
+							       
 							 }while(per.charAt(0) == '\n');
 							 
 							 listaLexos.remove(listaLexos.size() - 1);
 							 listaLexos.add(t.getLexeme());
-							 oriLinha--;
-							 listaLexos2.put(oriLinha, t.getLexeme());
-							 oriLinha++;
+							 
+							 
+							 
 						     per = per.replaceFirst(t.getLexeme(), "");
 						}else {
 							if(per.charAt(0) == ' ') { //##Remove espacos em branco##
@@ -485,67 +490,69 @@ public class Principal extends JFrame {
 								       per = per.replaceFirst(" ", "");
 								       
 								 }while(per.charAt(0) == ' ');
-								 								 								 
+								aux = listaLexos.get(listaLexos.size() - 1) + " ";
+								listaLexos.remove(listaLexos.size() - 1);
+								aux = aux + t.getLexeme();
+								listaLexos.add(aux);
+								per = per.replaceFirst(t.getLexeme(), "");
+								 
+							}else {
+								listaLexos.add(t.getLexeme());								
+						        per = per.replaceFirst(t.getLexeme(), "");	
 							}
 							
-							listaLexos.add(t.getLexeme());
-							listaLexos2.put(oriLinha, t.getLexeme());
-							oriLinha++;
-					        per = per.replaceFirst(t.getLexeme(), "");
+							
 						}
-					
+																											
+							//linha = listaLexos.lastIndexOf(t.getLexeme()) + 1;
+							//mostra += linha + "    " + t.getId() + "    " + t.getLexeme() + "\n";
+							
+						}
 						
-						//Segunda versao do contador
-						/*//ELSE ANTIGO
-						else {
-							for(int i = 0; i < per.length() - 1; i++) {
-								if(per.charAt(i) == '\n' && per.charAt(i + 1) == '\n') {
+					
+					
+					for(int i = 0; i < listaLexos.size(); i++) {
+						t = lexicoApre.nextToken();
+						if(t != null) {
+							if(listaLexos.get(i) != null) {
+								if(listaLexos.get(i).contains(" ")) {
+									auxApre = listaLexos.get(i).split(" ");
 									
-									listaLexos.add("");
+									for(int j = 0; j < auxApre.length; j++) {
+										
+										mostra += (i + 1) + "    " + t.getId() + "    " + t.getLexeme() + "\n";
+										t = lexicoApre.nextToken();
+									}
 									
-								}else if(per.charAt(i) != '\n') {
+							    }else if(listaLexos.get(i) != ""){
 									
-									listaLexos.add(t.getLexeme());
-									per = per.replaceFirst(t.getLexeme(), "");
-									per = per.replaceFirst("\n", "");
-									per = per.replaceFirst("\n", "");
-									
-									break;
+									mostra += (i + 1) + "    " + t.getId() + "    " + t.getLexeme() + "\n";
 								}else {
-									per = per.replaceFirst("\n", "");
+									continue;
 								}
 							}
-						}*/ 
-											
-							linha = listaLexos.lastIndexOf(t.getLexeme()) + 1;
-							mostra += linha + "    " + t.getId() + "    " + t.getLexeme() + "\n";
 							
 						}
+						
+					}
 					
-					
-					for (Map.Entry<Integer, String> entrada : listaLexos2.entrySet()) { 
+					/*for (Map.Entry<Integer, String> entrada : listaLexos2.entrySet()) { 
 						t = lexicoApre.nextToken();
 						if(t != null) {
 							mostraH += entrada.getKey() + "   " + t.getId() + "   " + entrada.getValue() + "\n";
 							continue;
-						}
-						
-						
-					}
-					
-					//Primeira versao do contador
-					/*for(int i = 0; i < per.length() - 1; i++) {
-						if(per.charAt(i) == '\n' && per.charAt(i + 1) == '\n') {
-							linhas.add("");
-							System.out.println("certo"); 
-						}
-					}*/
+						}												
+					}*/										
 					
 					mostra += "Programa compilado com sucesso";
 					tfMensagens.setText(mostra);
 					tfMensagens.setText(mostra + "\n" + mostraH);
 					
 				} catch (LexicalError e1) { // tratamento de erros
+					
+					String perErro = tfCodigo.getText(); //Ira percorrer novamente para saber a ultima linha de erro
+					
+					
 					
 					if(e1.getMessage().equals("Simbolo invalido")) {
 						tfMensagens.setText("Linha " + (linha + 1) + ": " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage());
