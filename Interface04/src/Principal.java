@@ -448,7 +448,7 @@ public class Principal extends JFrame {
 				Lexico lexico = new Lexico();				
 				String erroLex = "";
 				String per = tfCodigo.getText(); //pega o texto do tfCodigo, serve como guia para saber oque alterar e excluir
-				String lexemaErrado;
+			
 				
 				
 				per = per.replaceFirst("\r", "");
@@ -517,7 +517,7 @@ public class Principal extends JFrame {
 									}
 									
 							    }else if(listaLexos.get(i) != ""){
-									
+									t = lexicoApre.nextToken();
 									mostra += (i + 1) + "    " + t.getId() + "    " + t.getLexeme() + "\n";
 								}else {
 									continue;
@@ -721,11 +721,11 @@ public class Principal extends JFrame {
             if (pos + lineLength >= posicao) {
                 return qtdLinhas;
             }
-            pos += lineLength + 1; // +1 for the newline character
+            pos += lineLength + 1; 
             qtdLinhas++;
         }
 
-        return -1; // Return -1 if the position is out of bounds
+        return -1; 
     }
 	
 	/*public static String setArquivo(JFileChooser escolha) {
