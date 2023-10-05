@@ -19,12 +19,11 @@ import javax.swing.KeyStroke;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-
-
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -442,13 +441,9 @@ public class Principal extends JFrame {
 				ArrayList<String> listaLexos = new ArrayList<>(); //lista de lexemas, guia para apresentaçao
 				String aux = "";
 				String auxApre[];
-				
-				HashMap<Integer, String> listaLexos2 = new HashMap<>();
-				int oriLinha = 1;
-				String mostraH = "";
+												
 				Lexico lexicoApre = new Lexico();	
-				lexicoApre.setInput(tfCodigo.getText());
-				String auxHash = "";
+				lexicoApre.setInput(tfCodigo.getText());				
 				
 				Lexico lexico = new Lexico();				
 				String erroLex = "";
@@ -502,15 +497,12 @@ public class Principal extends JFrame {
 							}
 							
 							
-						}
-																											
-							//linha = listaLexos.lastIndexOf(t.getLexeme()) + 1;
-							//mostra += linha + "    " + t.getId() + "    " + t.getLexeme() + "\n";
+						}																																		
 							
 						}
 						
 					
-					
+					//CONTINUAR?
 					for(int i = 0; i < listaLexos.size(); i++) {
 						t = lexicoApre.nextToken();
 						if(t != null) {
@@ -534,30 +526,20 @@ public class Principal extends JFrame {
 							
 						}
 						
-					}
-					
-					/*for (Map.Entry<Integer, String> entrada : listaLexos2.entrySet()) { 
-						t = lexicoApre.nextToken();
-						if(t != null) {
-							mostraH += entrada.getKey() + "   " + t.getId() + "   " + entrada.getValue() + "\n";
-							continue;
-						}												
-					}*/										
+					}																	
 					
 					mostra += "Programa compilado com sucesso";
-					tfMensagens.setText(mostra);
-					tfMensagens.setText(mostra + "\n" + mostraH);
+					tfMensagens.setText(mostra);					
 					
 				} catch (LexicalError e1) { // tratamento de erros
 					
-					String perErro = tfCodigo.getText(); //Ira percorrer novamente para saber a ultima linha de erro
-					
+					linha = getLinhaErro(tfCodigo.getText(), e1.getPosition());
 					
 					
 					if(e1.getMessage().equals("Simbolo invalido")) {
-						tfMensagens.setText("Linha " + (linha + 1) + ": " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage());
+						tfMensagens.setText("Linha " + (linha) + ": " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage());
 					}else {
-						tfMensagens.setText("Linha " + (linha + 1) + ": " + e1.getMessage());
+						tfMensagens.setText("Linha " + (linha) + ": " + e1.getMessage());
 					}
 					
 					
@@ -728,6 +710,23 @@ public class Principal extends JFrame {
 	    }
 	    return null;
 	}
+	
+	private static int getLinhaErro(String texto, int posicao) {
+		String[] linhas = texto.split("\n");
+        int qtdLinhas = 1;
+        int pos = 0;
+
+        for (String linha : linhas) {
+            int lineLength = linha.length();
+            if (pos + lineLength >= posicao) {
+                return qtdLinhas;
+            }
+            pos += lineLength + 1; // +1 for the newline character
+            qtdLinhas++;
+        }
+
+        return -1; // Return -1 if the position is out of bounds
+    }
 	
 	/*public static String setArquivo(JFileChooser escolha) {
 		escolha.setFileFilter(new FileNameExtensionFilter("Arquivos *.txt", "txt"));
