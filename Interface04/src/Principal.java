@@ -501,24 +501,26 @@ public class Principal extends JFrame {
 							
 						}
 						
-					
+					t = lexicoApre.nextToken();
 					//CONTINUAR?
 					for(int i = 0; i < listaLexos.size(); i++) {
-						t = lexicoApre.nextToken();
+						
 						if(t != null) {
 							if(listaLexos.get(i) != null) {
 								if(listaLexos.get(i).contains(" ")) {
 									auxApre = listaLexos.get(i).split(" ");
 									
-									for(int j = 0; j < auxApre.length; j++) {
+									for(int j = 0; j != auxApre.length; j++) {
 										
 										mostra += (i + 1) + "    " + t.getId() + "    " + t.getLexeme() + "\n";
 										t = lexicoApre.nextToken();
+										
 									}
 									
 							    }else if(listaLexos.get(i) != ""){
-									t = lexicoApre.nextToken();
+									
 									mostra += (i + 1) + "    " + t.getId() + "    " + t.getLexeme() + "\n";
+									t = lexicoApre.nextToken();
 								}else {
 									continue;
 								}
@@ -541,15 +543,7 @@ public class Principal extends JFrame {
 					}else {
 						tfMensagens.setText("Linha " + (linha) + ": " + e1.getMessage());
 					}
-					
-					
 
-					// e.getMessage() - retorna a mensagem de erro de SCANNER_ERRO (olhar
-					// ScannerConstants.java
-					// e adaptar conforme o enunciado da parte 2)
-					// e.getPosition() - retorna a posição inicial do erro, tem que adaptar para
-					// mostrar a
-					// linha
 				}
 			}
 		});
@@ -559,14 +553,18 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e){
 				String mostra = ""; //acumula a linha o lexema e a classe
 				ArrayList<String> listaLexos = new ArrayList<>(); //lista de lexemas, guia para apresentaçao
-				
-				HashMap<Integer, String> listaLexos2 = new HashMap<>();
-				int oriLinha = 1;
-				String mostraH = "";
+				String aux = "";
+				String auxApre[];
+												
+				Lexico lexicoApre = new Lexico();	
+				lexicoApre.setInput(tfCodigo.getText());				
 				
 				Lexico lexico = new Lexico();				
 				String erroLex = "";
 				String per = tfCodigo.getText(); //pega o texto do tfCodigo, serve como guia para saber oque alterar e excluir
+			
+				
+				
 				per = per.replaceFirst("\r", "");
 				per = per.replaceAll("\t", "");
 				int linha = 0;
@@ -585,13 +583,15 @@ public class Principal extends JFrame {
 							 do {
 							       per = per.replaceFirst("\n", "");
 							       listaLexos.add("");
-							       listaLexos2.put(oriLinha, "");
+							       
+							       
 							 }while(per.charAt(0) == '\n');
 							 
 							 listaLexos.remove(listaLexos.size() - 1);
 							 listaLexos.add(t.getLexeme());
-							 listaLexos2.put(oriLinha, t.getLexeme());
-							 oriLinha++;
+							 
+							 
+							 
 						     per = per.replaceFirst(t.getLexeme(), "");
 						}else {
 							if(per.charAt(0) == ' ') { //##Remove espacos em branco##
@@ -599,74 +599,67 @@ public class Principal extends JFrame {
 								       per = per.replaceFirst(" ", "");
 								       
 								 }while(per.charAt(0) == ' ');
-								 								 								 
+								aux = listaLexos.get(listaLexos.size() - 1) + " ";
+								listaLexos.remove(listaLexos.size() - 1);
+								aux = aux + t.getLexeme();
+								listaLexos.add(aux);
+								per = per.replaceFirst(t.getLexeme(), "");
+								 
+							}else {
+								listaLexos.add(t.getLexeme());								
+						        per = per.replaceFirst(t.getLexeme(), "");	
 							}
-							listaLexos.add(t.getLexeme());
-					        per = per.replaceFirst(t.getLexeme(), "");
+							
+							
+						}																																		
+							
 						}
-					
 						
-						//Segunda versao do contador
-						/*//ELSE ANTIGO
-						else {
-							for(int i = 0; i < per.length() - 1; i++) {
-								if(per.charAt(i) == '\n' && per.charAt(i + 1) == '\n') {
+					t = lexicoApre.nextToken();
+					//CONTINUAR?
+					for(int i = 0; i < listaLexos.size(); i++) {
+						
+						if(t != null) {
+							if(listaLexos.get(i) != null) {
+								if(listaLexos.get(i).contains(" ")) {
+									auxApre = listaLexos.get(i).split(" ");
 									
-									listaLexos.add("");
+									for(int j = 0; j != auxApre.length; j++) {
+										
+										mostra += (i + 1) + "    " + t.getId() + "    " + t.getLexeme() + "\n";
+										t = lexicoApre.nextToken();
+										
+									}
 									
-								}else if(per.charAt(i) != '\n') {
+							    }else if(listaLexos.get(i) != ""){
 									
-									listaLexos.add(t.getLexeme());
-									per = per.replaceFirst(t.getLexeme(), "");
-									per = per.replaceFirst("\n", "");
-									per = per.replaceFirst("\n", "");
-									
-									break;
+									mostra += (i + 1) + "    " + t.getId() + "    " + t.getLexeme() + "\n";
+									t = lexicoApre.nextToken();
 								}else {
-									per = per.replaceFirst("\n", "");
+									continue;
 								}
 							}
-						}*/ 
-											
-							linha = listaLexos.lastIndexOf(t.getLexeme()) + 1;
-							mostra += linha + "    " + t.getId() + "    " + t.getLexeme() + "\n";
+							
 						}
-					
-					
-					for (Map.Entry<Integer, String> entrada : listaLexos2.entrySet()) { 
-						mostraH = entrada.getValue();
-					
-					}
-					
-					//Primeira versao do contador
-					/*for(int i = 0; i < per.length() - 1; i++) {
-						if(per.charAt(i) == '\n' && per.charAt(i + 1) == '\n') {
-							linhas.add("");
-							System.out.println("certo"); 
-						}
-					}*/
+						
+					}																	
 					
 					mostra += "Programa compilado com sucesso";
-					tfMensagens.setText(mostra);
-					tfMensagens.setText(mostra + "\n" + mostraH);
+					tfMensagens.setText(mostra);					
 					
 				} catch (LexicalError e1) { // tratamento de erros
 					
+					linha = getLinhaErro(tfCodigo.getText(), e1.getPosition());
+					
+					
 					if(e1.getMessage().equals("Simbolo invalido")) {
-						tfMensagens.setText("Linha " + (linha + 1) + ": " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage());
+						tfMensagens.setText("Linha " + (linha) + ": " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage());
 					}else {
-						tfMensagens.setText("Linha " + (linha + 1) + ": " + e1.getMessage());
+						tfMensagens.setText("Linha " + (linha) + ": " + e1.getMessage());
 					}
-					
-					
 
-					// e.getMessage() - retorna a mensagem de erro de SCANNER_ERRO (olhar
-					// ScannerConstants.java
-					// e adaptar conforme o enunciado da parte 2)
-					// e.getPosition() - retorna a posição inicial do erro, tem que adaptar para
-					// mostrar a
-					// linha
 				}
+				
 			}
 
 		  });
@@ -711,32 +704,16 @@ public class Principal extends JFrame {
 	    return null;
 	}
 	
-	private static int getLinhaErro(String texto, int posicao) {
-		String[] linhas = texto.split("\n");
+	private static int getLinhaErro(String texto, int posicao) {		
         int qtdLinhas = 1;
-        int pos = 0;
 
-        for (String linha : linhas) {
-            int lineLength = linha.length();
-            if (pos + lineLength >= posicao) {
-                return qtdLinhas;
-            }
-            pos += lineLength + 1; 
-            qtdLinhas++;
+        for (int i = 0;i != posicao; i++) {
+            
+            if (texto.charAt(i) == '\n') {
+            	qtdLinhas++;
+            }            
         }
-
-        return -1; 
+        return qtdLinhas; 
     }
-	
-	/*public static String setArquivo(JFileChooser escolha) {
-		escolha.setFileFilter(new FileNameExtensionFilter("Arquivos *.txt", "txt"));
-		escolha.setCurrentDirectory(new File(System.getProperty("user.home")));
-		int returnVal = escolha.showOpenDialog(escolha);
-	    if (returnVal == JFileChooser.APPROVE_OPTION) {
-	        String file = "" + escolha.getSelectedFile();
-	        return file;
-	    }
-	    return null;
-	}*/
-	
+		
 }
