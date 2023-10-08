@@ -437,228 +437,17 @@ public class Principal extends JFrame {
 		btnCompilar.setIcon(new ImageIcon(Principal.class.getResource("/icones/engrenagem.png")));
 		btnCompilar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String mostra = ""; //acumula a linha o lexema e a classe
-				ArrayList<String> listaLexos = new ArrayList<>(); //lista de lexemas, guia para apresentaçao
-				String aux = "";
-				String auxApre[];
+								
+				tfMensagens.setText(compilaInterno(tfCodigo.getText()));
 												
-				Lexico lexicoApre = new Lexico();	
-				lexicoApre.setInput(tfCodigo.getText());				
-				
-				Lexico lexico = new Lexico();				
-				String erroLex = "";
-				String per = tfCodigo.getText(); //pega o texto do tfCodigo, serve como guia para saber oque alterar e excluir
-			
-				
-				
-				per = per.replaceFirst("\r", "");
-				per = per.replaceAll("\t", "");
-				int linha = 0;
-
-				lexico.setInput(tfCodigo.getText());							
-				erroLex = tfCodigo.getText();
-				try {
-
-					Token t = null;
-					
-					while ((t = lexico.nextToken()) != null) {
-						
-						
-						if(per.charAt(0) == '\n') { //##Remove quebras de linhas##
-							
-							 do {
-							       per = per.replaceFirst("\n", "");
-							       listaLexos.add("");
-							       
-							       
-							 }while(per.charAt(0) == '\n');
-							 
-							 listaLexos.remove(listaLexos.size() - 1);
-							 listaLexos.add(t.getLexeme());
-							 
-							 
-							 
-						     per = per.replaceFirst(t.getLexeme(), "");
-						}else {
-							if(per.charAt(0) == ' ') { //##Remove espacos em branco##
-								do {
-								       per = per.replaceFirst(" ", "");
-								       
-								 }while(per.charAt(0) == ' ');
-								aux = listaLexos.get(listaLexos.size() - 1) + " ";
-								listaLexos.remove(listaLexos.size() - 1);
-								aux = aux + t.getLexeme();
-								listaLexos.add(aux);
-								per = per.replaceFirst(t.getLexeme(), "");
-								 
-							}else {
-								listaLexos.add(t.getLexeme());								
-						        per = per.replaceFirst(t.getLexeme(), "");	
-							}
-							
-							
-						}																																		
-							
-						}
-						
-					t = lexicoApre.nextToken();
-					//CONTINUAR?
-					for(int i = 0; i < listaLexos.size(); i++) {
-						
-						if(t != null) {
-							if(listaLexos.get(i) != null) {
-								if(listaLexos.get(i).contains(" ")) {
-									auxApre = listaLexos.get(i).split(" ");
-									
-									for(int j = 0; j != auxApre.length; j++) {
-										
-										mostra += (i + 1) + "    " + t.getId() + "    " + t.getLexeme() + "\n";
-										t = lexicoApre.nextToken();
-										
-									}
-									
-							    }else if(listaLexos.get(i) != ""){
-									
-									mostra += (i + 1) + "    " + t.getId() + "    " + t.getLexeme() + "\n";
-									t = lexicoApre.nextToken();
-								}else {
-									continue;
-								}
-							}
-							
-						}
-						
-					}																	
-					
-					mostra += "Programa compilado com sucesso";
-					tfMensagens.setText(mostra);					
-					
-				} catch (LexicalError e1) { // tratamento de erros
-					
-					linha = getLinhaErro(tfCodigo.getText(), e1.getPosition());
-					
-					
-					if(e1.getMessage().equals("Simbolo invalido")) {
-						tfMensagens.setText("Linha " + (linha) + ": " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage());
-					}else {
-						tfMensagens.setText("Linha " + (linha) + ": " + e1.getMessage());
-					}
-
-				}
 			}
 		});
 		
 		btnCompilar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F7"), "Compilar");
 		btnCompilar.getActionMap().put("Compilar", new AbstractAction(){
 			public void actionPerformed(ActionEvent e){
-				String mostra = ""; //acumula a linha o lexema e a classe
-				ArrayList<String> listaLexos = new ArrayList<>(); //lista de lexemas, guia para apresentaçao
-				String aux = "";
-				String auxApre[];
-												
-				Lexico lexicoApre = new Lexico();	
-				lexicoApre.setInput(tfCodigo.getText());				
 				
-				Lexico lexico = new Lexico();				
-				String erroLex = "";
-				String per = tfCodigo.getText(); //pega o texto do tfCodigo, serve como guia para saber oque alterar e excluir
-			
-				
-				
-				per = per.replaceFirst("\r", "");
-				per = per.replaceAll("\t", "");
-				int linha = 0;
-
-				lexico.setInput(tfCodigo.getText());							
-				erroLex = tfCodigo.getText();
-				try {
-
-					Token t = null;
-					
-					while ((t = lexico.nextToken()) != null) {
-						
-						
-						if(per.charAt(0) == '\n') { //##Remove quebras de linhas##
-							
-							 do {
-							       per = per.replaceFirst("\n", "");
-							       listaLexos.add("");
-							       
-							       
-							 }while(per.charAt(0) == '\n');
-							 
-							 listaLexos.remove(listaLexos.size() - 1);
-							 listaLexos.add(t.getLexeme());
-							 
-							 
-							 
-						     per = per.replaceFirst(t.getLexeme(), "");
-						}else {
-							if(per.charAt(0) == ' ') { //##Remove espacos em branco##
-								do {
-								       per = per.replaceFirst(" ", "");
-								       
-								 }while(per.charAt(0) == ' ');
-								aux = listaLexos.get(listaLexos.size() - 1) + " ";
-								listaLexos.remove(listaLexos.size() - 1);
-								aux = aux + t.getLexeme();
-								listaLexos.add(aux);
-								per = per.replaceFirst(t.getLexeme(), "");
-								 
-							}else {
-								listaLexos.add(t.getLexeme());								
-						        per = per.replaceFirst(t.getLexeme(), "");	
-							}
-							
-							
-						}																																		
-							
-						}
-						
-					t = lexicoApre.nextToken();
-					//CONTINUAR?
-					for(int i = 0; i < listaLexos.size(); i++) {
-						
-						if(t != null) {
-							if(listaLexos.get(i) != null) {
-								if(listaLexos.get(i).contains(" ")) {
-									auxApre = listaLexos.get(i).split(" ");
-									
-									for(int j = 0; j != auxApre.length; j++) {
-										
-										mostra += (i + 1) + "    " + t.getId() + "    " + t.getLexeme() + "\n";
-										t = lexicoApre.nextToken();
-										
-									}
-									
-							    }else if(listaLexos.get(i) != ""){
-									
-									mostra += (i + 1) + "    " + t.getId() + "    " + t.getLexeme() + "\n";
-									t = lexicoApre.nextToken();
-								}else {
-									continue;
-								}
-							}
-							
-						}
-						
-					}																	
-					
-					mostra += "Programa compilado com sucesso";
-					tfMensagens.setText(mostra);					
-					
-				} catch (LexicalError e1) { // tratamento de erros
-					
-					linha = getLinhaErro(tfCodigo.getText(), e1.getPosition());
-					
-					
-					if(e1.getMessage().equals("Simbolo invalido")) {
-						tfMensagens.setText("Linha " + (linha) + ": " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage());
-					}else {
-						tfMensagens.setText("Linha " + (linha) + ": " + e1.getMessage());
-					}
-
-				}
+				tfMensagens.setText(compilaInterno(tfCodigo.getText()));
 				
 			}
 
@@ -704,6 +493,121 @@ public class Principal extends JFrame {
 	    return null;
 	}
 	
+	//Metodo de compilar
+	private static String compilaInterno(String codigo) {
+		String mostra = ""; //acumula a linha o lexema e a classe
+		ArrayList<String> listaLexos = new ArrayList<>(); //lista de lexemas, guia para apresentaçao
+		String aux = "";
+		String auxApre[];
+										
+		Lexico lexicoApre = new Lexico();	
+		lexicoApre.setInput(codigo);				
+		
+		Lexico lexico = new Lexico();				
+		String erroLex = "";
+		String per = codigo; //pega o texto do tfCodigo, serve como guia para saber oque alterar e excluir
+	
+		
+		
+		per = per.replaceFirst("\r", "");
+		per = per.replaceAll("\t", "");
+		int linha = 0;
+
+		lexico.setInput(codigo);							
+		erroLex = codigo;
+		try {
+
+			Token t = null;
+			
+			while ((t = lexico.nextToken()) != null) {
+				
+				
+				if(per.charAt(0) == '\n') { //##Remove quebras de linhas##
+					
+					 do {
+					       per = per.replaceFirst("\n", "");
+					       listaLexos.add("");
+					       
+					       
+					 }while(per.charAt(0) == '\n');
+					 
+					 listaLexos.remove(listaLexos.size() - 1);
+					 listaLexos.add(t.getLexeme());
+					 
+					 
+					 
+				     per = per.replaceFirst(t.getLexeme(), "");
+				}else {
+					if(per.charAt(0) == ' ') { //##Remove espacos em branco##
+						do {
+						       per = per.replaceFirst(" ", "");
+						       
+						 }while(per.charAt(0) == ' ');
+						aux = listaLexos.get(listaLexos.size() - 1) + " ";
+						listaLexos.remove(listaLexos.size() - 1);
+						aux = aux + t.getLexeme();
+						listaLexos.add(aux);
+						per = per.replaceFirst(t.getLexeme(), "");
+						 
+					}else {
+						listaLexos.add(t.getLexeme());								
+				        per = per.replaceFirst(t.getLexeme(), "");	
+					}
+					
+					
+				}																																		
+					
+				}
+				
+			t = lexicoApre.nextToken();
+			//CONTINUAR?
+			for(int i = 0; i < listaLexos.size(); i++) {
+				
+				if(t != null) {
+					if(listaLexos.get(i) != null) {
+						if(listaLexos.get(i).contains(" ")) {
+							auxApre = listaLexos.get(i).split(" ");
+							
+							for(int j = 0; j != auxApre.length; j++) {
+								
+								mostra += (i + 1) + "    " + t.getId() + "    " + t.getLexeme() + "\n";
+								t = lexicoApre.nextToken();
+								
+							}
+							
+					    }else if(listaLexos.get(i) != ""){
+							
+							mostra += (i + 1) + "    " + t.getId() + "    " + t.getLexeme() + "\n";
+							t = lexicoApre.nextToken();
+						}else {
+							continue;
+						}
+					}
+					
+				}
+				
+			}																	
+			
+			mostra += "Programa compilado com sucesso";
+			return mostra;				
+			
+		} catch (LexicalError e1) { // tratamento de erros
+			
+			linha = getLinhaErro(codigo, e1.getPosition());
+			
+			
+			if(e1.getMessage().equals("Simbolo invalido")) {
+				return ("Linha " + (linha) + ": " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage());
+			}else {
+				return("Linha " + (linha) + ": " + e1.getMessage());
+			}
+
+		}catch(NullPointerException ne) {
+			return "Erro de construcao";
+		}
+	}
+	
+	//Metodo pega a linha de erro
 	private static int getLinhaErro(String texto, int posicao) {		
         int qtdLinhas = 1;
 
