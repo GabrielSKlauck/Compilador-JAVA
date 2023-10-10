@@ -1,6 +1,6 @@
 package Utilitarios;
 
-public interface Constants extends ScannerConstants
+public interface Constants extends ScannerConstants, ParserConstants
 {
     int EPSILON  = 0;
     int DOLLAR   = 1;
@@ -21,24 +21,25 @@ public interface Constants extends ScannerConstants
     int t_repeat = 15;
     int t_true = 16;
     int t_while = 17;
-    int t_TOKEN_18 = 18; //"&"
-    int t_TOKEN_19 = 19; //"|"
-    int t_TOKEN_20 = 20; //"!"
-    int t_TOKEN_21 = 21; //","
-    int t_TOKEN_22 = 22; //";"
-    int t_TOKEN_23 = 23; //"="
-    int t_TOKEN_24 = 24; //":"
-    int t_TOKEN_25 = 25; //"("
-    int t_TOKEN_26 = 26; //")"
-    int t_TOKEN_27 = 27; //"{"
-    int t_TOKEN_28 = 28; //"}"
-    int t_TOKEN_29 = 29; //"=="
-    int t_TOKEN_30 = 30; //"!="
-    int t_TOKEN_31 = 31; //"<"
-    int t_TOKEN_32 = 32; //">"
-    int t_TOKEN_33 = 33; //"+"
-    int t_TOKEN_34 = 34; //"-"
-    int t_TOKEN_35 = 35; //"*"
-    int t_TOKEN_36 = 36; //"/"
+    int t_end = 18;
+    int t_TOKEN_19 = 19; //"&"
+    int t_TOKEN_20 = 20; //"|"
+    int t_TOKEN_21 = 21; //"!"
+    int t_TOKEN_22 = 22; //","
+    int t_TOKEN_23 = 23; //";"
+    int t_TOKEN_24 = 24; //"="
+    int t_TOKEN_25 = 25; //":"
+    int t_TOKEN_26 = 26; //"("
+    int t_TOKEN_27 = 27; //")"
+    int t_TOKEN_28 = 28; //"{"
+    int t_TOKEN_29 = 29; //"}"
+    int t_TOKEN_30 = 30; //"=="
+    int t_TOKEN_31 = 31; //"!="
+    int t_TOKEN_32 = 32; //"<"
+    int t_TOKEN_33 = 33; //">"
+    int t_TOKEN_34 = 34; //"+"
+    int t_TOKEN_35 = 35; //"-"
+    int t_TOKEN_36 = 36; //"*"
+    int t_TOKEN_37 = 37; //"/"
 
 }

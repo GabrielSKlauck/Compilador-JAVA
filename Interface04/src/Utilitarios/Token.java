@@ -13,7 +13,12 @@ public class Token
         this.position = position;
     }
 
-    public final String getId()
+    public final int getId()
+    {
+        return id;
+    }
+
+    public final String getLexeme()
     {
         switch(this.id) {
         	case 2:
@@ -42,11 +47,6 @@ public class Token
         return "?";
     }
 
-    public final String getLexeme()
-    {
-        return lexeme;
-    }
-
     public final int getPosition()
     {
         return position;
@@ -56,5 +56,4 @@ public class Token
     {
         return id+" ( "+lexeme+" ) @ "+position;
     };
-       
 }

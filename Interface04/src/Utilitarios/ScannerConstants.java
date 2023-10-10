@@ -3355,16 +3355,16 @@ public interface ScannerConstants
         {57, 41}
     };
 
-    int[] TOKEN_STATE = {-2,  0, 20, -1,  0, 18, 25, 26, 35, 33, 21, 34, 36,  4,  4, 24, 22, 31, 23, 32, -2, -1,  2, 27, 19, 28, 30, -1,  6, -1,  0,  0,  0, -1,  4,  4, 29,  0,  3,  3,  2,  5,  4,  4,  3,  3, -1 };
+    int[] TOKEN_STATE = {-2,  0, 21, -1,  0, 19, 26, 27, 36, 34, 22, 35, 37,  4,  4, 25, 23, 32, 24, 33, -2, -1,  2, 28, 20, 29, 31, -1,  6, -1,  0,  0,  0, -1,  4,  4, 30,  0,  3,  3,  2,  5,  4,  4,  3,  3, -1 };
 
     int[] SPECIAL_CASES_INDEXES =
-        { 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11 };
+        { 0, 0, 0, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12 };
 
     String[] SPECIAL_CASES_KEYS =
-        {  "do", "else", "false", "fun", "if", "in", "main", "out", "repeat", "true", "while" };
+        {  "do", "else", "end", "false", "fun", "if", "in", "main", "out", "repeat", "true", "while" };
 
     int[] SPECIAL_CASES_VALUES =
-        {  7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
+        {  7, 8, 18, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
 
     String[] SCANNER_ERROR =
     {
@@ -3388,20 +3388,20 @@ public interface ScannerConstants
         "",
         "",
         "",
-        "Comentario de bloco nao finalizado",
-        "Identificador inválido",
+        "Erro identificando <ignorar>",
+        "Identificador invalido",
         "",
         "",
         "",
         "",
         "",
-        "Constante_string inválida",
+        "Erro identificando cte_string",
         "",
         "Erro identificando cte_string",
         "",
         "",
         "",
-        "Constante_int inválido",
+        "Erro identificando cte_float",
         "",
         "",
         "",
@@ -3414,7 +3414,7 @@ public interface ScannerConstants
         "",
         "",
         "",
-        "Constante_float inválido"
+        "Erro identificando cte_float"
     };
 
 }

@@ -47,6 +47,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import Utilitarios.LexicalError;
 import Utilitarios.Lexico;
+import Utilitarios.SemanticError;
+import Utilitarios.Semantico;
+import Utilitarios.Sintatico;
+import Utilitarios.SyntaticError;
 import Utilitarios.Token;
 
 import java.awt.Dimension;
@@ -495,10 +499,12 @@ public class Principal extends JFrame {
 	
 	//Metodo de compilar
 	private static String compilaInterno(String codigo) {
+		/*
+		
 		String mostra = ""; //acumula a linha o lexema e a classe
 		ArrayList<String> listaLexos = new ArrayList<>(); //lista de lexemas, guia para apresentaçao
 		String aux = "";
-		String auxApre[];
+		String auxApre[];*/
 										
 		Lexico lexicoApre = new Lexico();	
 		lexicoApre.setInput(codigo);				
@@ -507,7 +513,8 @@ public class Principal extends JFrame {
 		String erroLex = "";
 		String per = codigo; //pega o texto do tfCodigo, serve como guia para saber oque alterar e excluir
 	
-		
+		Sintatico sintatico = new Sintatico();
+		Semantico semantico = new Semantico();
 		
 		per = per.replaceFirst("\r", "");
 		per = per.replaceAll("\t", "");
@@ -517,9 +524,12 @@ public class Principal extends JFrame {
 		erroLex = codigo;
 		try {
 
-			Token t = null;
+			sintatico.parse(lexico, semantico);
+			return "Progama compilado com sucesso";
+			//Parte 2
+			/*Token t = null;
 			
-			while ((t = lexico.nextToken()) != null) {
+			/*while ((t = lexico.nextToken()) != null) {
 				
 				
 				if(per.charAt(0) == '\n') { //##Remove quebras de linhas##
@@ -590,20 +600,42 @@ public class Principal extends JFrame {
 			
 			mostra += "Programa compilado com sucesso";
 			return mostra;				
-			
+			*/
 		} catch (LexicalError e1) { // tratamento de erros
 			
 			linha = getLinhaErro(codigo, e1.getPosition());
 			
 			
 			if(e1.getMessage().equals("Simbolo invalido")) {
-				return ("Linha " + (linha) + ": " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage());
+				return "Linha " + linha + ": " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage();
+				
+			}else if(e1.getMessage().equals("Erro identificando cte_string")){
+				return"Linha " + linha + ": cte_string invalida" ;
+				
+			}else if(e1.getMessage().equals("Identificador invalido")) {
+				return"Linha " + linha + "Identificador invalido ";
+				
+			}else if(e1.getMessage().equals("Erro identificando <ignorar>")) {
+				return "Linha " + linha + "Comentário de bloco inválido ou não finalizado";
 			}else {
-				return("Linha " + (linha) + ": " + e1.getMessage());
+				return "Linha " + linha + "Palavra resevada invalida";
 			}
 
-		}catch(NullPointerException ne) {
-			return "Erro de construcao";
+		}catch ( SyntaticError e )
+		{
+			
+		     return "Erro na linha " + getLinhaErro(codigo, e.getPosition()) + " – encontrado: " + sintatico.getToken() + 
+		    		 " " + e.getMessage();
+		     
+			//Trata erros sintáticos
+			//linha 				sugestão: converter getPosition em linha
+			//símbolo encontrado    sugestão: implementar um método getToken no sintatico
+			//mensagem - símbolos esperados,   alterar ParserConstants.java, String[] PARSER_ERROR		
+		}
+		catch ( SemanticError e )
+		{
+			return "Semantico nao implementado ainda";
+			//Trata erros semânticos
 		}
 	}
 	
