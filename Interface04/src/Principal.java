@@ -512,6 +512,7 @@ public class Principal extends JFrame {
 		Lexico lexico = new Lexico();				
 		String erroLex = "";
 		String per = codigo; //pega o texto do tfCodigo, serve como guia para saber oque alterar e excluir
+		
 	
 		Sintatico sintatico = new Sintatico();
 		Semantico semantico = new Semantico();
@@ -623,9 +624,15 @@ public class Principal extends JFrame {
 
 		}catch ( SyntaticError e )
 		{
+			linha = getLinhaErro(codigo, e.getPosition());
 			
-		     return "Erro na linha " + getLinhaErro(codigo, e.getPosition()) + " – encontrado: " + sintatico.getToken() + 
-		    		 " " + e.getMessage();
+			if(linha != -1) {
+				return "Erro na linha " + getLinhaErro(codigo, e.getPosition()) + " – encontrado: " + sintatico.getToken() + 
+			    		 " " + e.getMessage();
+			}else {
+				return "Esperado fim do arquivo";
+			}
+		     
 		     
 			//Trata erros sintáticos
 			//linha 				sugestão: converter getPosition em linha
@@ -640,7 +647,8 @@ public class Principal extends JFrame {
 	}
 	
 	//Metodo pega a linha de erro
-	private static int getLinhaErro(String texto, int posicao) {		
+	private static int getLinhaErro(String texto, int posicao) {
+		try {
         int qtdLinhas = 1;
 
         for (int i = 0;i != posicao; i++) {
@@ -649,7 +657,10 @@ public class Principal extends JFrame {
             	qtdLinhas++;
             }            
         }
-        return qtdLinhas; 
+        return qtdLinhas;
+		}catch(StringIndexOutOfBoundsException e) {
+			return -1;
+		}
     }
 		
 }
