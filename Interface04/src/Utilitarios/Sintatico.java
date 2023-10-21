@@ -11,6 +11,10 @@ public class Sintatico implements Constants
     private Semantico semanticAnalyser;
 
     public String getToken() {
+    	return this.currentToken.getLexeme();
+    }
+    
+    public String getId() {
     	return this.currentToken.toString();
     }
     

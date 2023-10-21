@@ -625,18 +625,13 @@ public class Principal extends JFrame {
 		}catch ( SyntaticError e )
 		{
 			linha = getLinhaErro(codigo, e.getPosition());
-			
+									
 			if(linha != -1) {
-				if(sintatico.getToken().contains("@")) {
-					return "Erro na linha " + getLinhaErro(codigo, e.getPosition()) + " – encontrado: " + fatoraLexo(sintatico.getToken())  + 
-				    		 " " + e.getMessage();
-				}else {
-					return "Erro na linha " + getLinhaErro(codigo, e.getPosition()) + " – encontrado: " + sintatico.getToken()  + 
-				    		 " " + e.getMessage();
-				}
+				
+				return "Erro na linha " + linha + " – encontrado: " + fatoraLexo(sintatico.getId()) + " " + e.getMessage();			
 				
 			}else {
-				return "Esperado fim do arquivo";
+				return "Esperado EOF";
 			}
 		     
 		     
