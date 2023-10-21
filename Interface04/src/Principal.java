@@ -627,8 +627,14 @@ public class Principal extends JFrame {
 			linha = getLinhaErro(codigo, e.getPosition());
 			
 			if(linha != -1) {
-				return "Erro na linha " + getLinhaErro(codigo, e.getPosition()) + " – encontrado: " + sintatico.getToken() + 
-			    		 " " + e.getMessage();
+				if(sintatico.getToken().contains("@")) {
+					return "Erro na linha " + getLinhaErro(codigo, e.getPosition()) + " – encontrado: " + fatoraLexo(sintatico.getToken())  + 
+				    		 " " + e.getMessage();
+				}else {
+					return "Erro na linha " + getLinhaErro(codigo, e.getPosition()) + " – encontrado: " + sintatico.getToken()  + 
+				    		 " " + e.getMessage();
+				}
+				
 			}else {
 				return "Esperado fim do arquivo";
 			}
@@ -662,5 +668,14 @@ public class Principal extends JFrame {
 			return -1;
 		}
     }
+	
+	private static String fatoraLexo(String lexo) {
+		int pos1 = lexo.indexOf("(");
+		int pos2 = lexo.indexOf(")");
+		lexo = lexo.substring(pos1+2, pos2);
+		
+		
+		return lexo;
+	}
 		
 }

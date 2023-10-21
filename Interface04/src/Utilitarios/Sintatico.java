@@ -11,7 +11,7 @@ public class Sintatico implements Constants
     private Semantico semanticAnalyser;
 
     public String getToken() {
-    	return this.currentToken.getLexeme();
+    	return this.currentToken.toString();
     }
     
     private static final boolean isTerminal(int x)
