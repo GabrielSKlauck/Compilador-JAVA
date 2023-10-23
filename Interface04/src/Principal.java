@@ -608,16 +608,16 @@ public class Principal extends JFrame {
 			
 			
 			if(e1.getMessage().equals("Simbolo invalido")) {
-				return "Linha " + linha + ": " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage();
+				return "Erro da linha " + linha + " - Simbolo invalido: " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage();
 				
 			}else if(e1.getMessage().equals("Erro identificando cte_string")){
-				return"Linha " + linha + ": cte_string invalida" ;
+				return "Erro da linha " + linha + " - cte_string invalida" ;
 				
 			}else if(e1.getMessage().equals("Erro identificado cte_int")) {
-				return "Linha " + linha + ": cte_int invalida";
+				return "Erro da linha " + linha + " - cte_int invalida";
 				
 			}else if(e1.getMessage().equals("Erro identificado cte_float")) {
-				return "Linha " + linha + ": cte_float invalido";
+				return "Erro da linha " + linha + " - cte_float invalido";
 			}
 				else if(e1.getMessage().equals("Erro identificando id")) {
 				return"Linha " + linha + " Identificador invalido";
@@ -631,10 +631,14 @@ public class Principal extends JFrame {
 		}catch ( SyntaticError e )
 		{
 			linha = getLinhaErro(codigo, e.getPosition());
-									
+			String item = fatora(sintatico.getId());
 			if(linha != -1) {
-				
-				return "Erro na linha " + linha + " – encontrado: " + fatoraLexo(sintatico.getId()) + " " + e.getMessage();			
+				if(item.isEmpty() || item.isBlank()) {
+					return "Erro na linha " + linha + " " + e.getMessage();
+				}else {
+					return "Erro na linha " + linha + " – encontrado: " + item + " " + e.getMessage();
+				}
+							
 				
 			}else {
 				return "Esperado EOF";
@@ -670,7 +674,7 @@ public class Principal extends JFrame {
 		}
     }
 	
-	private static String fatoraLexo(String lexo) {
+	private static String fatora(String lexo) {
 		int pos1 = lexo.indexOf("(");
 		int pos2 = lexo.indexOf(")");
 		lexo = lexo.substring(pos1+2, pos2);
