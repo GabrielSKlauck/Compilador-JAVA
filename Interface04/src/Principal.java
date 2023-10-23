@@ -522,7 +522,7 @@ public class Principal extends JFrame {
 		int linha = 0;
 
 		lexico.setInput(codigo);							
-		erroLex = codigo;
+		//erroLex = codigo;
 		try {
 
 			sintatico.parse(lexico, semantico);
@@ -613,13 +613,19 @@ public class Principal extends JFrame {
 			}else if(e1.getMessage().equals("Erro identificando cte_string")){
 				return"Linha " + linha + ": cte_string invalida" ;
 				
-			}else if(e1.getMessage().equals("Identificador invalido")) {
-				return"Linha " + linha + "Identificador invalido ";
+			}else if(e1.getMessage().equals("Erro identificado cte_int")) {
+				return "Linha " + linha + ": cte_int invalida";
+				
+			}else if(e1.getMessage().equals("Erro identificado cte_float")) {
+				return "Linha " + linha + ": cte_float invalido";
+			}
+				else if(e1.getMessage().equals("Erro identificando id")) {
+				return"Linha " + linha + " Identificador invalido";
 				
 			}else if(e1.getMessage().equals("Erro identificando <ignorar>")) {
-				return "Linha " + linha + "Comentário de bloco inválido ou não finalizado";
+				return "Linha " + linha + " Comentário de bloco inválido ou não finalizado";
 			}else {
-				return "Linha " + linha + "Palavra resevada invalida";
+				return "Linha " + linha + " Palavra reservada invalida";
 			}
 
 		}catch ( SyntaticError e )
