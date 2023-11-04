@@ -61,7 +61,42 @@ public class Semantico implements Constants
         case 116:
         	pilha.add("string");
         	codigo_objeto.add("ldstr." + token.getLexeme() +  "\n");
-        break;               
+        break;          
+        
+        case 117:
+        	System.out.println("Nao feito");
+        break;
+        
+        case 110:
+        	int valor1 = (int) pilha.pop();
+        	int valor2 = (int) pilha.pop();
+        	pilha.push(valor1 + valor2);       	       	
+        break;
+        
+        case 111:
+        	valor1 = (int) pilha.pop();
+        	valor2 = (int) pilha.pop();
+        	pilha.push(valor2 - valor1);       	       	
+        break;
+
+        case 112:
+        	valor1 = (int) pilha.pop();
+        	valor2 = (int) pilha.pop();
+        	pilha.push(valor1 * valor2);       	       	
+        break;
+        
+        case 113:
+        	valor1 = (int) pilha.pop();
+        	valor2 = (int) pilha.pop();
+        	if(valor1 != 0) {
+        		pilha.push(valor2 / valor1);
+        	}else {
+        		      		
+        	}
+        	       	       	
+        break;
+
+
     }	      
 }
     
