@@ -64,6 +64,7 @@ public class Principal extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField tfArquivo;
+	private static String codigoIlasm;
 
 	/**
 	 * Launch the application.
@@ -443,6 +444,7 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 								
 				tfMensagens.setText(compilaInterno(tfCodigo.getText()));
+				criaIlasm(tfArquivo.getText());
 												
 			}
 		});
@@ -452,7 +454,7 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e){
 				
 				tfMensagens.setText(compilaInterno(tfCodigo.getText()));
-				
+				criaIlasm(tfArquivo.getText());
 			}
 
 		  });
@@ -499,13 +501,7 @@ public class Principal extends JFrame {
 	
 	//Metodo de compilar
 	private static String compilaInterno(String codigo) {
-		/*
-		
-		String mostra = ""; //acumula a linha o lexema e a classe
-		ArrayList<String> listaLexos = new ArrayList<>(); //lista de lexemas, guia para apresentaçao
-		String aux = "";
-		String auxApre[];*/
-										
+												
 		Lexico lexicoApre = new Lexico();	
 		lexicoApre.setInput(codigo);				
 		
@@ -526,82 +522,9 @@ public class Principal extends JFrame {
 		try {
 
 			sintatico.parse(lexico, semantico);
+			codigoIlasm = Semantico.getCodigo();
 			return "Progama compilado com sucesso";
-			//Parte 2
-			/*Token t = null;
-			
-			/*while ((t = lexico.nextToken()) != null) {
-				
-				
-				if(per.charAt(0) == '\n') { //##Remove quebras de linhas##
-					
-					 do {
-					       per = per.replaceFirst("\n", "");
-					       listaLexos.add("");
-					       
-					       
-					 }while(per.charAt(0) == '\n');
-					 
-					 listaLexos.remove(listaLexos.size() - 1);
-					 listaLexos.add(t.getLexeme());
-					 
-					 
-					 
-				     per = per.replaceFirst(t.getLexeme(), "");
-				}else {
-					if(per.charAt(0) == ' ') { //##Remove espacos em branco##
-						do {
-						       per = per.replaceFirst(" ", "");
-						       
-						 }while(per.charAt(0) == ' ');
-						aux = listaLexos.get(listaLexos.size() - 1) + " ";
-						listaLexos.remove(listaLexos.size() - 1);
-						aux = aux + t.getLexeme();
-						listaLexos.add(aux);
-						per = per.replaceFirst(t.getLexeme(), "");
-						 
-					}else {
-						listaLexos.add(t.getLexeme());								
-				        per = per.replaceFirst(t.getLexeme(), "");	
-					}
-					
-					
-				}																																		
-					
-				}
-				
-			t = lexicoApre.nextToken();
-			//CONTINUAR?
-			for(int i = 0; i < listaLexos.size(); i++) {
-				
-				if(t != null) {
-					if(listaLexos.get(i) != null) {
-						if(listaLexos.get(i).contains(" ")) {
-							auxApre = listaLexos.get(i).split(" ");
-							
-							for(int j = 0; j != auxApre.length; j++) {
-								
-								mostra += (i + 1) + "    " + t.getId() + "    " + t.getLexeme() + "\n";
-								t = lexicoApre.nextToken();
-								
-							}
-							
-					    }else if(listaLexos.get(i) != ""){
-							
-							mostra += (i + 1) + "    " + t.getId() + "    " + t.getLexeme() + "\n";
-							t = lexicoApre.nextToken();
-						}else {
-							continue;
-						}
-					}
-					
-				}
-				
-			}																	
-			
-			mostra += "Programa compilado com sucesso";
-			return mostra;				
-			*/
+						
 		} catch (LexicalError e1) { // tratamento de erros
 			
 			linha = getLinhaErro(codigo, e1.getPosition());
@@ -642,18 +565,39 @@ public class Principal extends JFrame {
 				
 			}else {
 				return "Esperado EOF";
-			}
-		     
-		     
-			//Trata erros sintáticos
-			//linha 				sugestão: converter getPosition em linha
-			//símbolo encontrado    sugestão: implementar um método getToken no sintatico
-			//mensagem - símbolos esperados,   alterar ParserConstants.java, String[] PARSER_ERROR		
+			}		     
+		    				
 		}
 		catch ( SemanticError e )
 		{
 			return "Semantico nao implementado ainda";
 			//Trata erros semânticos
+		}
+	}
+	
+	private static void criaIlasm(String caminho) {
+		
+		caminho =  caminho.replaceAll(".txt", ".il");
+		File file = new File(caminho);
+		try {
+			file.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			//Limpa arquivo
+			BufferedWriter bf = Files.newBufferedWriter(Path.of(caminho), StandardOpenOption.TRUNCATE_EXISTING);
+			bf.flush();
+			//Reescreve arqivo
+			BufferedWriter buffWrite = new BufferedWriter(new FileWriter(caminho, true));						
+			buffWrite.write(codigoIlasm);
+			buffWrite.close();
+			
+		} catch (IOException e1) {						
+			e1.printStackTrace();
+		}catch(NullPointerException e2) {
+			
 		}
 	}
 	
