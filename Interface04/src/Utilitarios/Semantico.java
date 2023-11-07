@@ -105,7 +105,10 @@ public class Semantico implements Constants
     	for(int i = 0; i < codigo_objeto.size(); i++) {
     		codigoCerto += codigo_objeto.get(i);    		
     	}    	
-    	return codigoCerto;
-    	
+    	return codigoCerto;   	
+    }
+    
+    public static void limpaCodigoObjeto() {
+    	codigo_objeto.clear();
     }
 }

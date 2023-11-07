@@ -65,6 +65,7 @@ public class Principal extends JFrame {
 	private JPanel contentPane;
 	private JTextField tfArquivo;
 	private static String codigoIlasm;
+	private static String caminhoArquivo; 
 
 	/**
 	 * Launch the application.
@@ -254,6 +255,7 @@ public class Principal extends JFrame {
 		        tfCodigo.setText(texto);	
 		        tfMensagens.setText("");
 		        tfArquivo.setText(arquivo);
+		        caminhoArquivo = arquivo;
 		        }catch(NullPointerException et) {
 		        	
 		        }			    	    			    				
@@ -294,6 +296,7 @@ public class Principal extends JFrame {
 		        tfCodigo.setText(texto);	
 		        tfMensagens.setText("");
 		        tfArquivo.setText(arquivo);
+		        caminhoArquivo = arquivo;
 		        }catch(NullPointerException et) {
 		        	
 		        }			    	    			    	
@@ -442,9 +445,10 @@ public class Principal extends JFrame {
 		btnCompilar.setIcon(new ImageIcon(Principal.class.getResource("/icones/engrenagem.png")));
 		btnCompilar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-								
+				
+				
 				tfMensagens.setText(compilaInterno(tfCodigo.getText()));
-				criaIlasm(tfArquivo.getText());
+				
 												
 			}
 		});
@@ -454,7 +458,7 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e){
 				
 				tfMensagens.setText(compilaInterno(tfCodigo.getText()));
-				criaIlasm(tfArquivo.getText());
+				
 			}
 
 		  });
@@ -499,6 +503,8 @@ public class Principal extends JFrame {
 	    return null;
 	}
 	
+	
+	
 	//Metodo de compilar
 	private static String compilaInterno(String codigo) {
 												
@@ -520,10 +526,11 @@ public class Principal extends JFrame {
 		lexico.setInput(codigo);							
 		//erroLex = codigo;
 		try {
-
+			codigoIlasm = "";
+			Semantico.limpaCodigoObjeto();
 			sintatico.parse(lexico, semantico);
-			codigoIlasm = Semantico.getCodigo();
-			return "Progama compilado com sucesso";
+			codigoIlasm = Semantico.getCodigo();	
+			
 						
 		} catch (LexicalError e1) { // tratamento de erros
 			
@@ -573,6 +580,9 @@ public class Principal extends JFrame {
 			return "Semantico nao implementado ainda";
 			//Trata erros semânticos
 		}
+		
+		criaIlasm(caminhoArquivo);
+		return "Progama compilado com sucesso";
 	}
 	
 	private static void criaIlasm(String caminho) {
@@ -598,6 +608,18 @@ public class Principal extends JFrame {
 			e1.printStackTrace();
 		}catch(NullPointerException e2) {
 			
+		}
+
+	}
+	
+	private static void apagaTudo(String caminho) {
+		caminho =  caminho.replaceAll(".txt", ".il");
+		File file = new File(caminho);
+		file.delete();
+		try {
+			file.createNewFile();
+		} catch (IOException e) {		
+			e.printStackTrace();
 		}
 	}
 	
