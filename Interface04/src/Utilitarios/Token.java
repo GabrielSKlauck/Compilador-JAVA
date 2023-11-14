@@ -47,6 +47,14 @@ public class Token
         return "?";
     }
 
+    public String getItem() {
+    	String lexo = this.toString();
+    	int pos1 = lexo.indexOf("(");
+		int pos2 = lexo.indexOf(")");
+		lexo = lexo.substring(pos1+2, pos2 - 1);
+		return lexo;
+    }
+    
     public final int getPosition()
     {
         return position;
