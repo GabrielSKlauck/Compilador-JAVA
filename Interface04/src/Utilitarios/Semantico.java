@@ -145,29 +145,76 @@ public class Semantico implements Constants
         	
         	switch(op) {
         		case "==":
-        			codigo_objeto.add("ceq");
+        			codigo_objeto.add("ceq \n");
         			pilha.push("bool");
         		case ">":
-        			codigo_objeto.add("cgt");
+        			codigo_objeto.add("cgt \n");
         			pilha.push("bool");
         		break;
         		case "<":
-        			codigo_objeto.add("clt");
+        			codigo_objeto.add("clt \n");
         			pilha.push("bool");
         		case "!=":
         		break;
         	}
         break;
         
+        //IF ELSE
         case 118:
         	tipo = (String) pilha.pop();
         	if(!tipo.equals("bool")) {
         		throw new SemanticError(tipo);
         	}
-        	codigo_objeto.add("brfalse");
+        	pilha_rotulos.push("rotuloCond1");
+        	codigo_objeto.add("brfalse rotuloCond1 \n");
         break;
         
+        case 119:
+        	String rotulo = (String) pilha_rotulos.pop();
+        	codigo_objeto.add(rotulo + ": \n");
+        	
+        break;
         
+        case 120:
+        	
+        	codigo_objeto.add("br rotuloCond2 \n");
+        	rotulo = (String) pilha_rotulos.pop();
+        	codigo_objeto.add(rotulo + ": \n");
+        	pilha_rotulos.push("rotuloCond2");
+        	
+        	
+        break;
+        
+        //REPETIÇAO
+        
+        case 121:
+        	pilha_rotulos.push("rotuloRep1");
+        	codigo_objeto.add("rotuloRep1: \n");
+        break;
+        
+        case 122:
+        	if(!pilha.pop().equals("bool")) {
+        		throw new SemanticError("expressão incompatível em comando de repetição");
+        	}
+        	codigo_objeto.add("brfalse rotuloRep2");
+        	pilha_rotulos.push("rotuloRep2");
+        break;
+        
+        case 123:
+        	String rotulo2 = (String) pilha_rotulos.pop();
+        	rotulo = (String) pilha_rotulos.pop();
+        	
+        	codigo_objeto.add("br " + rotulo);
+        	codigo_objeto.add(rotulo2 + ": \n");
+        break;
+        
+        case 124:
+        	if(!pilha.pop().equals("bool")) {
+        		throw new SemanticError("expressão incompatível em comando de repetição");
+        	}
+        	rotulo = (String) pilha_rotulos.pop();
+        	codigo_objeto.add("brtrue " + rotulo + " \n");
+        break;
     }	      
 }
     
