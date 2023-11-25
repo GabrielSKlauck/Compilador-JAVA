@@ -564,20 +564,20 @@ public class Principal extends JFrame {
 			String item = fatora(sintatico.getId());
 			if(linha != -1) {
 				if(item.isEmpty() || item.isBlank()) {
-					return "Erro na linha " + linha + " " + e.getMessage();
+					return "Erro na linha " + linha + e.getMessage() + " encontrado " + item;
 				}else {
-					return "Erro na linha " + linha + " – encontrado: " + item + " " + e.getMessage();
+					return "Erro na linha " + linha + " – encontrado: " + sintatico.getToken() + " " + e.getMessage();
 				}
 							
 				
 			}else {
-				return "Esperado EOF";
+				return "Erro na linha " + linha + " - encotrado EOF esperado " + e.getMessage();
 			}		     
 		    				
 		}
 		catch ( SemanticError e )
 		{
-			return "Semantico nao implementado ainda";
+			return e.getMessage();
 			//Trata erros semânticos
 		}
 		
@@ -636,6 +636,7 @@ public class Principal extends JFrame {
         }
         return qtdLinhas;
 		}catch(StringIndexOutOfBoundsException e) {
+			
 			return -1;
 		}
     }
