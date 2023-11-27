@@ -538,19 +538,19 @@ public class Principal extends JFrame {
 			
 			
 			if(e1.getMessage().equals("Simbolo invalido")) {
-				return "Erro da linha " + linha + " - Simbolo invalido: " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage();
+				return "Erro na linha " + linha + " - Simbolo invalido: " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage();
 				
 			}else if(e1.getMessage().equals("Erro identificando cte_string")){
-				return "Erro da linha " + linha + " - cte_string invalida" ;
+				return "Erro na linha " + linha + " - cte_string invalida" ;
 				
 			}else if(e1.getMessage().equals("Erro identificado cte_int")) {
-				return "Erro da linha " + linha + " - cte_int invalida";
+				return "Erro na linha " + linha + " - cte_int invalida";
 				
 			}else if(e1.getMessage().equals("Erro identificado cte_float")) {
-				return "Erro da linha " + linha + " - cte_float invalido";
+				return "Erro na linha " + linha + " - cte_float invalido";
 			}
 				else if(e1.getMessage().equals("Erro identificando id")) {
-				return"Linha " + linha + " Identificador invalido";
+				return "Linha " + linha + " Identificador invalido ";
 				
 			}else if(e1.getMessage().equals("Erro identificando <ignorar>")) {
 				return "Linha " + linha + " Comentário de bloco inválido ou não finalizado";
@@ -562,16 +562,25 @@ public class Principal extends JFrame {
 		{
 			linha = getLinhaErro(codigo, e.getPosition());
 			String item = fatora(sintatico.getId());
-			if(linha != -1) {
+			if(!sintatico.getToken().equals("?")) {
 				if(item.isEmpty() || item.isBlank()) {
-					return "Erro na linha " + linha + e.getMessage() + " encontrado " + item;
+					
+					
+					return "Erro na linha " + linha + " " + e.getMessage() + " - encontrado: " + item;
 				}else {
-					return "Erro na linha " + linha + " – encontrado: " + sintatico.getToken() + " " + e.getMessage();
+					if(tipoConstante(item).equals("cte_int")) {
+						return "Erro na linha " + linha + " - encontrado: cte_int " + e.getMessage();
+					}else if(tipoConstante(item).equals("cte_float")) {
+						return "Erro na linha " + linha + " - encontrado: cte_float " + e.getMessage();
+					}else if(tipoConstante(item).equals("cte_string")) {
+						return "Erro na linha " + linha + " - encontrado: cte_string " + e.getMessage();
+					}
+					return "Erro na linha " + linha + " – encontrado: " + item + " " + e.getMessage();
 				}
 							
 				
 			}else {
-				return "Erro na linha " + linha + " - encotrado EOF esperado " + e.getMessage();
+				return "Encontrado EOF esperado " + e.getMessage();
 			}		     
 		    				
 		}
@@ -583,6 +592,21 @@ public class Principal extends JFrame {
 		
 		criaIlasm(caminhoArquivo);
 		return "Progama compilado com sucesso";
+	}
+	
+	private static String tipoConstante(String item){
+		try {
+			Integer.parseInt(item);
+			return "cte_int";
+		}catch(NumberFormatException e) {
+			try {
+				Double.parseDouble(item);
+				return "cte_float";
+			}catch(NumberFormatException e1) {
+				return "cte_string";
+			}
+			
+		}
 	}
 	
 	private static void criaIlasm(String caminho) {
@@ -625,8 +649,9 @@ public class Principal extends JFrame {
 	
 	//Metodo pega a linha de erro
 	private static int getLinhaErro(String texto, int posicao) {
+		int qtdLinhas = 1;
 		try {
-        int qtdLinhas = 1;
+        
 
         for (int i = 0;i != posicao; i++) {
             
@@ -636,15 +661,20 @@ public class Principal extends JFrame {
         }
         return qtdLinhas;
 		}catch(StringIndexOutOfBoundsException e) {
-			
-			return -1;
+			qtdLinhas = 1;
+			for(int i = 0; i != texto.length(); i++) {
+				if (texto.charAt(i) == '\n') {
+	            	qtdLinhas++;
+	            }    
+			}
 		}
+		return qtdLinhas--;
     }
 	
 	private static String fatora(String lexo) {
 		int pos1 = lexo.indexOf("(");
 		int pos2 = lexo.indexOf(")");
-		lexo = lexo.substring(pos1+2, pos2);
+		lexo = lexo.substring(pos1+2, pos2-1);
 		
 		
 		return lexo;
