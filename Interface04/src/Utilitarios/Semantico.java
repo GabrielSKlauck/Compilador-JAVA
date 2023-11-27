@@ -40,7 +40,7 @@ public class Semantico implements Constants
         
         	String tipo = (String) pilha.pop();
         	if(tipo.equals("int64")) {
-        		codigo_objeto.add("conv.i8\n");
+        		codigo_objeto.add("conv.i8 \n");
         	}
         	codigo_objeto.add("call void [mscorlib]System.Console::WriteLine(" + tipo + ")\n");
         
@@ -149,13 +149,14 @@ public class Semantico implements Constants
 
         //OPERACOES DE MAIOR MENOR IGUAL
         case 109:
-        	int item = (Integer) pilha.pop();
-        	int item2 = (Integer) pilha.pop();
+        	String item =  (String) pilha.pop();
+            String item2 =  (String) pilha.pop();
         	
         	switch(op) {
         		case "==":
         			codigo_objeto.add("ceq \n");
         			pilha.push("bool");
+        		break;
         		case ">":
         			codigo_objeto.add("cgt \n");
         			pilha.push("bool");
@@ -172,10 +173,10 @@ public class Semantico implements Constants
         case 118:
         	tipo = (String) pilha.pop();
         	if(!tipo.equals("bool")) {
-        		throw new SemanticError(tipo);
+        		throw new SemanticError("expressão incompatível em comando de seleção");
         	}
-        	pilha_rotulos.push("rotuloCond" + contadorRotIf);
         	codigo_objeto.add("brfalse rotuloCond" + contadorRotIf + "\n");
+        	pilha_rotulos.push("rotuloCond" + contadorRotIf);      	
         	contadorRotIf++;
         break;
         
@@ -207,15 +208,16 @@ public class Semantico implements Constants
         	if(!pilha.pop().equals("bool")) {
         		throw new SemanticError("expressão incompatível em comando de repetição");
         	}
-        	codigo_objeto.add("brfalse rotuloRep" + contadorRotRep);
+        	codigo_objeto.add("brfalse rotuloRep" + contadorRotRep + "\n");
         	pilha_rotulos.push("rotuloRep" + contadorRotRep);
+        	contadorRotRep++;
         break;
         
         case 123:
         	String rotulo2 = (String) pilha_rotulos.pop();
         	rotulo = (String) pilha_rotulos.pop();
         	
-        	codigo_objeto.add("br " + rotulo);
+        	codigo_objeto.add("br " + rotulo + " \n");
         	codigo_objeto.add(rotulo2 + ": \n");
         break;
         
@@ -227,14 +229,14 @@ public class Semantico implements Constants
         	codigo_objeto.add("brtrue " + rotulo + " \n");
         break;
         //VARIAVEIS
-        case 125:
-        	lista_id.add(token.getItem());
+        case 125: //VERIFICAR COM A PROF
+        	lista_id.add(token.getItem());        	
         break;
         
         case 126:
         	for(String id : lista_id) {
         		if(tabela_simbolos.containsKey(id)) {
-        			throw new SemanticError(id + "ja foi declarado");
+        			throw new SemanticError(id + " ja foi declarado");
         		}    		
         	}
         	String id = token.getItem();
@@ -247,12 +249,15 @@ public class Semantico implements Constants
         	
         	for(String ide : lista_id) {
         		if(tabela_simbolos.containsKey(ide)) {
-        			throw new SemanticError(ide + "ja foi declarado");
+        			throw new SemanticError(ide + " ja foi declarado");
         		}       		
         	}
-        	id = token.getItem();
-        	tabela_simbolos.put(id, retornaTipo(id));
-        	codigo_objeto.add(".locals " + id + " \n");
+        	
+        	for(String ide : lista_id) {       		
+            	tabela_simbolos.put(ide, retornaTipo(ide));
+            	codigo_objeto.add(".locals " + ide + " \n");      		
+        	}
+        	
         	lista_id.clear();
         	
         break;
@@ -263,8 +268,8 @@ public class Semantico implements Constants
         		codigo_objeto.add("dup \n");
         	}
         	for(String ide : lista_id) {
-        		if(tabela_simbolos.containsKey(ide)) {
-        			throw new SemanticError(ide + "ja foi declarado");
+        		if(!tabela_simbolos.containsKey(ide)) {
+        			throw new SemanticError(ide + " ja foi declarado");
         		}       		
         	}
         	id = token.getItem();
@@ -277,31 +282,36 @@ public class Semantico implements Constants
         break;
         
         case 129:
-        	
+        	boolean idAchado = false;
         	for(String ide : lista_id) {
         		if(tabela_simbolos.containsKey(ide)) {
-        			codigo_objeto.add("");
-        		}else {
-        			throw new SemanticError(ide + "ja foi declarado");
+        			idAchado = true;
         		}
         	}
         	id = token.getItem();
-        	if(retornaTipo(id).equals("_i")) {
-        		codigo_objeto.add("call string [mscorlib]System.Console::ReadLine() \n");
-            	codigo_objeto.add("call int64 [mscorlib]System.Int64::Parse(string) \n");
-            	
-        	}else if(retornaTipo(id).equals("_f")) {
-        		codigo_objeto.add("call string [mscorlib]System.Console::ReadLine() \n");
-            	codigo_objeto.add("call float64 [mscorlib]System.Double::Parse(string) \n");
-            	
-        	}else if(retornaTipo(id).equals("_b")) {
-        		codigo_objeto.add("call string [mscorlib]System.Console::ReadLine() \n");
-            	codigo_objeto.add("call bool [mscorlib]System.Boolean::Parse(string) \n");
-        	}else {
-        		codigo_objeto.add("call string [mscorlib]System.Console::ReadLine()");
+        	if(!idAchado) {
+        		throw new SemanticError(id + " nao declarado");
         	}
         	
         	
+        	if(retornaTipo(id).equals("int64")) {
+        		codigo_objeto.add("call string [mscorlib]System.Console::ReadLine() \n");
+            	codigo_objeto.add("call int64 [mscorlib]System.Int64::Parse(string) \n");
+            	codigo_objeto.add("stloc " + id + " \n");
+        	}else if(retornaTipo(id).equals("float64")) {
+        		codigo_objeto.add("call string [mscorlib]System.Console::ReadLine() \n");
+            	codigo_objeto.add("call float64 [mscorlib]System.Double::Parse(string) \n");
+            	codigo_objeto.add("stloc " + id + " \n");
+        	}else if(retornaTipo(id).equals("bool")) {
+        		codigo_objeto.add("call string [mscorlib]System.Console::ReadLine() \n");
+            	codigo_objeto.add("call bool [mscorlib]System.Boolean::Parse(string) \n");
+            	codigo_objeto.add("stloc " + id + " \n");
+        	}else {
+        		codigo_objeto.add("call string [mscorlib]System.Console::ReadLine()");
+        		codigo_objeto.add("stloc " + id + " \n");
+        	}
+        	
+        	lista_id.clear();
         break;
         
         case 130:
