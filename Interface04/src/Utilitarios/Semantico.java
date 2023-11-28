@@ -42,7 +42,7 @@ public class Semantico implements Constants
         	if(tipo.equals("int64")) {
         		codigo_objeto.add("conv.i8 \n");
         	}
-        	codigo_objeto.add("call void [mscorlib]System.Console::WriteLine(" + tipo + ")\n");
+        	codigo_objeto.add("call void [mscorlib]System.Console::WriteLine(" + tipo + ") \n");
         
         break;
         //OPERACOES DO IF
@@ -255,7 +255,7 @@ public class Semantico implements Constants
         	
         	for(String ide : lista_id) {       		
             	tabela_simbolos.put(ide, retornaTipo(ide));
-            	codigo_objeto.add(".locals " + ide + " \n");      		
+            	codigo_objeto.add(".locals(" + retornaTipo(ide)+ " " + ide + ") \n");      		
         	}
         	
         	lista_id.clear();
@@ -273,10 +273,10 @@ public class Semantico implements Constants
         		}       		
         	}
         	id = token.getItem();
-        	if(id.equals("int64")) {
+        	if(retornaTipo(lista_id.get(0)).equals("int64")) {
         		codigo_objeto.add("conv.r8\n");
         	}
-        	codigo_objeto.add("ldloc " + id + "\n");
+        	codigo_objeto.add("stloc " + lista_id.get(0) + "\n");
         	lista_id.clear();
         	
         break;
@@ -307,7 +307,7 @@ public class Semantico implements Constants
             	codigo_objeto.add("call bool [mscorlib]System.Boolean::Parse(string) \n");
             	codigo_objeto.add("stloc " + id + " \n");
         	}else {
-        		codigo_objeto.add("call string [mscorlib]System.Console::ReadLine()");
+        		codigo_objeto.add("call string [mscorlib]System.Console::ReadLine() \n");
         		codigo_objeto.add("stloc " + id + " \n");
         	}
         	
@@ -315,8 +315,8 @@ public class Semantico implements Constants
         break;
         
         case 130:
-        	
-        	codigo_objeto.add("call void [mscorlib]System.Console::Write(string)");
+        	codigo_objeto.add("ldstr " + token.getItem() + "\n");
+        	codigo_objeto.add("call void [mscorlib]System.Console::Write(string) \n");
         break;
         
         case 131:

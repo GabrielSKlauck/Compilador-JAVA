@@ -674,7 +674,11 @@ public class Principal extends JFrame {
 	private static String fatora(String lexo) {
 		int pos1 = lexo.indexOf("(");
 		int pos2 = lexo.indexOf(")");
-		lexo = lexo.substring(pos1+2, pos2-1);
+		try {
+			lexo = lexo.substring(pos1+2, pos2-1);			
+		}catch(StringIndexOutOfBoundsException e) {
+			return "";
+		}
 		
 		
 		return lexo;
