@@ -6,12 +6,12 @@ import java.util.Stack;
 
 public class Semantico implements Constants
 {
-	String operador_relacional;
-	public static ArrayList<String> codigo_objeto = new ArrayList<>();
-	Stack pilha = new Stack();
-	Stack pilha_rotulos = new Stack();
-	HashMap<String, Object> tabela_simbolos = new HashMap<>();
-	ArrayList<String> lista_id = new ArrayList<>();
+	
+	public static ArrayList<String> codigo_objeto = new ArrayList<>(); // Array contetndo todo o codigo objeto
+	Stack pilha = new Stack(); // pilha contendo tipos
+	Stack pilha_rotulos = new Stack(); //Pilha contendo "funçoes"
+	HashMap<String, Object> tabela_simbolos = new HashMap<>(); //Tabela de simbolos, chave o identificador
+	ArrayList<String> lista_id = new ArrayList<>(); //Lista de identificadores
 	int contadorRotIf = 1;
 	int contadorRotRep = 1;
 	String op;
@@ -326,18 +326,19 @@ public class Semantico implements Constants
         	}
         	Object tipoVar = tabela_simbolos.get(id);
         	
-        	if(tipoVar.getClass().equals("String")) {
+        	if(tipoVar.equals("string")) {
         		pilha.add("string");
-            	codigo_objeto.add("ldstr " + tipoVar +  "\n");
+            	codigo_objeto.add("ldloc " + id +  "\n");
             	
-        	}else if(tipoVar.getClass().equals("Integer")) {
+        	}else if(tipoVar.equals("int64")) {
         		pilha.add("int64");
-            	codigo_objeto.add("ldc.i8 " + tipoVar + "\n" + "conv.r8\n");
+            	codigo_objeto.add("ldloc " + id + "\n" + "conv.r8\n");
             	
-        	}else if(tipoVar.getClass().equals("Float")) {
+        	}else if(tipoVar.equals("float64")) {
         		pilha.add("float64");
-            	codigo_objeto.add("ldc.r8 " + token.getItem() + "\n");
-        	}else if(tipoVar.getClass().equals("Boolean")){
+            	codigo_objeto.add("ldloc " + id + "\n");
+            	
+        	}else if(tipoVar.equals("bool")){
         		if(tipoVar.equals("true")) {
         			pilha.add("bool");
                 	codigo_objeto.add("ldc.i4.1" + "\n");
