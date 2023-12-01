@@ -550,7 +550,7 @@ public class Principal extends JFrame {
 				return "Erro na linha " + linha + " - cte_float invalido";
 			}
 				else if(e1.getMessage().equals("Erro identificando id")) {
-				return "Linha " + linha + " Identificador invalido ";
+				return "Erro na linha " + linha + " identificador invalido";
 				
 			}else if(e1.getMessage().equals("Erro identificando <ignorar>")) {
 				return "Linha " + linha + " Comentário de bloco inválido ou não finalizado";
@@ -566,7 +566,7 @@ public class Principal extends JFrame {
 				if(item.isEmpty() || item.isBlank()) {
 					
 					
-					return "Erro na linha " + linha + " " + e.getMessage() + " - encontrado: " + item;
+					return "Erro na linha " + linha + " - encontrado: " + item + e.getMessage();
 				}else {
 					if(tipoConstante(item).equals("cte_int")) {
 						return "Erro na linha " + linha + " - encontrado: cte_int " + e.getMessage();
@@ -580,14 +580,15 @@ public class Principal extends JFrame {
 							
 				
 			}else {
-				return "Encontrado EOF esperado " + e.getMessage();
+				return "Encontrado EOF " + e.getMessage();
 			}		     
 		    				
 		}
 		catch ( SemanticError e )
 		{
+			//AS MENSAGENS DE ERRO SAO GERADAS NA CLASSE SEMANTICO
+			//AQUI ELAS SO SAO CAPTURADAS E MOSTRADAS NA AREA DE MENSAGEM
 			return e.getMessage();
-			//Trata erros semânticos
 		}
 		
 		criaIlasm(caminhoArquivo);
