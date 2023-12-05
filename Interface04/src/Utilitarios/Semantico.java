@@ -49,13 +49,15 @@ public class Semantico implements Constants
         case 103:
         	pilha.pop();
         	pilha.pop();
-        	codigo_objeto.add("and");
+        	pilha.push("bool");
+        	codigo_objeto.add("and \n");
         break;
         	
         case 104:
         	pilha.pop();
         	pilha.pop();
-        	codigo_objeto.add("or");
+        	pilha.push("bool");
+        	codigo_objeto.add("or \n");
         break;
         //COLOCANDO VALORES NA PILHA
         case 114:
@@ -165,6 +167,8 @@ public class Semantico implements Constants
         			codigo_objeto.add("clt \n");
         			pilha.push("bool");
         		case "!=":
+        			codigo_objeto.add("ceq\n" + "ldc.i4 0\n" + "ceq\n");
+        			pilha.push("bool");
         		break;
         	}
         break;

@@ -564,18 +564,17 @@ public class Principal extends JFrame {
 			String item = fatora(sintatico.getId());
 			if(!sintatico.getToken().equals("?")) {
 				if(item.isEmpty() || item.isBlank()) {
-					
-					
-					return "Erro na linha " + linha + " - encontrado: " + item + e.getMessage();
+										
+					return "Erro na linha " + linha + " - encontrado: " + item + " esperado expressao";
 				}else {
 					if(tipoConstante(item).equals("cte_int")) {
 						return "Erro na linha " + linha + " - encontrado: cte_int " + e.getMessage();
 					}else if(tipoConstante(item).equals("cte_float")) {
 						return "Erro na linha " + linha + " - encontrado: cte_float " + e.getMessage();
-					}else if(tipoConstante(item).equals("cte_string")) {
+					}else if(ehString(item)) {
 						return "Erro na linha " + linha + " - encontrado: cte_string " + e.getMessage();
 					}
-					return "Erro na linha " + linha + " – encontrado: " + item + " " + e.getMessage();
+					return "Erro na linha " + linha + " – encontrado: " + item + " esperado expressao";
 				}
 							
 				
@@ -593,6 +592,14 @@ public class Principal extends JFrame {
 		
 		criaIlasm(caminhoArquivo);
 		return "Progama compilado com sucesso";
+	}
+	
+	private static boolean ehString(String texto) {
+		if(texto.startsWith("\"") && texto.endsWith("\"")) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
 	private static String tipoConstante(String item){
