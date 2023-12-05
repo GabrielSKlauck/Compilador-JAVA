@@ -274,7 +274,7 @@ public class Semantico implements Constants
         	}
         	id = token.getItem();
         	if(retornaTipo(lista_id.get(0)).equals("int64")) {
-        		codigo_objeto.add("conv.r8\n");
+        		codigo_objeto.add("conv.i8\n");
         	}
         	codigo_objeto.add("stloc " + lista_id.get(0) + "\n");
         	lista_id.clear();
