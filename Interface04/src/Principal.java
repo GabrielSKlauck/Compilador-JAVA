@@ -529,33 +529,32 @@ public class Principal extends JFrame {
 			codigoIlasm = "";
 			Semantico.limpaCodigoObjeto();
 			sintatico.parse(lexico, semantico);
-			codigoIlasm = Semantico.getCodigo();	
-			
+			codigoIlasm = Semantico.getCodigo();			
 						
 		} catch (LexicalError e1) { // tratamento de erros
 			
 			linha = getLinhaErro(codigo, e1.getPosition());
-			
+			String item = fatora(sintatico.getId());
 			
 			if(e1.getMessage().equals("Simbolo invalido")) {
 				return "Simbolo invalido: " + linha + " - " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage();
 				
 			}else if(e1.getMessage().equals("Erro identificando cte_string")){
-				return "cte-string invalida " + linha;
+				return "cte-string invalida linha" + linha;
 				
 			}else if(e1.getMessage().equals("Erro identificado cte_int")) {
-				return "cte_int invalida " + linha;
+				return "cte_int invalida linha" + linha;
 				
 			}else if(e1.getMessage().equals("Erro identificado cte_float")) {
-				return "cte_float invalido " + linha;
+				return "cte_float invalido linha" + linha;
 			}
 				else if(e1.getMessage().equals("Erro identificando id")) {
-				return "Linha " + linha + " identificador invalido";
+				return "Linha " + linha + " - identificador invalido";
 				
 			}else if(e1.getMessage().equals("Erro identificando <ignorar>")) {
-				return "Linha " + linha + " Comentário de bloco inválido ou não finalizado";
+				return "Comentário de bloco inválido ou não finalizado, linha " + linha;
 			}else {
-				return "Linha " + linha + " Palavra reservada invalida";
+				return "Palavra reservada invalida linha" + linha;
 			}
 
 		}catch ( SyntaticError e )
