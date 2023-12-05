@@ -538,19 +538,19 @@ public class Principal extends JFrame {
 			
 			
 			if(e1.getMessage().equals("Simbolo invalido")) {
-				return "Erro na linha " + linha + " - Simbolo invalido: " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage();
+				return "Simbolo invalido: " + linha + " - " + erroLex.charAt(e1.getPosition()) + " " + e1.getMessage();
 				
 			}else if(e1.getMessage().equals("Erro identificando cte_string")){
-				return "Erro na linha " + linha + " - cte_string invalida" ;
+				return "cte-string invalida " + linha;
 				
 			}else if(e1.getMessage().equals("Erro identificado cte_int")) {
-				return "Erro na linha " + linha + " - cte_int invalida";
+				return "cte_int invalida " + linha;
 				
 			}else if(e1.getMessage().equals("Erro identificado cte_float")) {
-				return "Erro na linha " + linha + " - cte_float invalido";
+				return "cte_float invalido " + linha;
 			}
 				else if(e1.getMessage().equals("Erro identificando id")) {
-				return "Erro na linha " + linha + " identificador invalido";
+				return "Linha " + linha + " identificador invalido";
 				
 			}else if(e1.getMessage().equals("Erro identificando <ignorar>")) {
 				return "Linha " + linha + " Comentário de bloco inválido ou não finalizado";
